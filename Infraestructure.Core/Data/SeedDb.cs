@@ -28,14 +28,16 @@ namespace Infraestructure.Core.Data
             await CheckStateAsync();
             await CheckTypePermissionAsync();
             await CheckPermissionAsync();
+            await CheckRolAsync();
+            await CheckRolPermissonAsync();
 
             //await CheckTypeIdentificationAsync();
-            //await CheckRolAsync();
-            //await CheckRolPermissonAsync();
             //await CheckUserAsync();
             //await CheckRolUserAsync();
             //await CheckCategory();
         }
+
+      
 
         private async Task CheckTypeStateAsync()
         {
@@ -293,8 +295,51 @@ namespace Infraestructure.Core.Data
                 await _context.SaveChangesAsync();
             }
         }
-    
-    
-    
+
+
+        private async Task CheckRolAsync()
+        {
+            if (!_context.RolEntity.Any())
+            {
+                _context.RolEntity.AddRange(new List<RolEntity>
+                {
+                    new RolEntity
+                    {
+                        IdRol=(int)Enums.RolUser.Administrador,
+                        Rol="Administrador"
+                    },
+                    new RolEntity
+                    {
+                        IdRol=(int)Enums.RolUser.Veterinario,
+                        Rol="Veterinario"
+                    },
+                     new RolEntity
+                    {
+                        IdRol=(int)Enums.RolUser.Estandar,
+                        Rol="Estandar"
+                    }
+                });
+
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        private async Task CheckRolPermissonAsync()
+        {
+            if (!_context.RolPermissionEntity.Where(x => x.IdRol == (int)Enums.RolUser.Administrador).Any())
+            {
+                var rolesPermisosAdmin = _context.PermissionEntity.Select(x => new RolPermissionEntity
+                {
+                    IdRol = (int)Enums.RolUser.Administrador,
+                    IdPermission = x.IdPermission
+                }).ToList();
+
+                _context.RolPermissionEntity.AddRange(rolesPermisosAdmin);
+
+
+                await _context.SaveChangesAsync();
+            }
+        }
+
     }
 }

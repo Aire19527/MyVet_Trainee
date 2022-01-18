@@ -25,6 +25,7 @@ namespace MyVet.Handlers
 
             //Domain
             services.AddTransient<IUserServices, UserServices>();
+            services.AddTransient<IRolServices, RolServices>();
         }
     }
 }

@@ -6,6 +6,9 @@
 
 <h1>Listado de Usuarios </h1>
 
+<p>
+    <a asp-action="Create" class="btn btn-primary">Nuevo Usuario</a>
+</p>
 
 <div class="row">
 
@@ -28,8 +31,7 @@
                     <th> @user.Email</th>
                     <td>
                         <a asp-action="Edit" asp-route-id="@user.IdUser" class="btn btn-warning"> Editar</a>
-                        <a class="btn btn-danger"> Eliminar</a>
-
+                        <a asp-action="Delete" asp-route-id="@user.IdUser" class="btn btn-danger"> Eliminar</a>
                     </td>
                 </tr>
             }

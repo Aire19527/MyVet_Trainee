@@ -73,5 +73,13 @@ namespace Common.Utils.Enums
             ConsultarEstados = 18,
             ActualizarEstado = 19,
         }
+       
+        public enum RolUser
+        {
+            Administrador = 1,
+            Veterinario = 2,
+            Estandar= 3
+        }
+
     }
 }
