@@ -7,6 +7,12 @@ namespace MyVet.Domain.Services.Interface
 {
     public interface IUserServices
     {
+        #region Auth
+        ResponseDto Login(UserDto user);
+        Task<ResponseDto> Register(UserDto data);
+        #endregion
+
+        #region Methods Crud
         List<UserEntity> GetAll();
 
         UserEntity GetUser(int idUser);
@@ -16,5 +22,8 @@ namespace MyVet.Domain.Services.Interface
 
         Task<bool> DeleteUser(int idUser);
         Task<ResponseDto> CreateUser(UserEntity user);
+
+        
+        #endregion
     }
 }

@@ -1,4 +1,5 @@
 using Infraestructure.Core.Data;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -34,8 +35,21 @@ namespace MyVet
             });
             #endregion
 
+            #region Inyeccion de dependencia 
             DependencyInyectionHandler.DependencyInyectionConfig(services);
-            
+            #endregion
+
+            #region Auth
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
+                    options.SlidingExpiration = true;
+                    options.AccessDeniedPath = "/Forbidden/";
+                    options.LoginPath = "/Auth/Login";
+                });
+
+            #endregion
 
             services.AddControllersWithViews();
         }
@@ -58,6 +72,10 @@ namespace MyVet
 
             app.UseRouting();
 
+            //#1
+            app.UseAuthentication();
+
+            //#2
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
