@@ -46,7 +46,7 @@ namespace MyVet.Controllers
 
                 var claims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.Name, userEntity.Name),
+                    new Claim(ClaimTypes.Name, userEntity.FullName),
                     new Claim(TypeClaims.IdUser, userEntity.IdUser.ToString()),
                     new Claim(TypeClaims.UserName, userEntity.Email),
                     new Claim(TypeClaims.IdRol, string.Join(",",userEntity.RolUserEntities.Select(x=>x.IdRol))),
@@ -84,7 +84,6 @@ namespace MyVet.Controllers
 
                 return Redirect("/Home/Index");
             }
-
         }
 
 

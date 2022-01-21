@@ -4,7 +4,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using MyVet.Domain.Services.Interface;
 using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using static Common.Utils.Constant.Const;
 
 namespace MyVet.Controllers
 {
@@ -54,6 +57,15 @@ namespace MyVet.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(UserEntity user)
         {
+
+            var rtok = Request.Headers["Authorization"];
+
+            var loggedInUser = HttpContext.User;
+            var loggedInUserName = loggedInUser.Identity.Name; // This is our username we set earlier in the claims. 
+            var loggedInUserName2 = loggedInUser.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name).Value; //Another way to get the name or any other claim we set. 
+            var loggedInUserName3 = loggedInUser.Claims.FirstOrDefault(x => x.Type == TypeClaims.IdRol).Value; //Another way to get the name or any other claim we set. 
+
+
             IActionResult response;
 
             bool result = await _userServices.UpdateUser(user);

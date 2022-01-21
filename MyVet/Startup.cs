@@ -51,6 +51,9 @@ namespace MyVet
 
             #endregion
 
+            //Esto es para que refresque los datos en ejecución
+            services.AddControllersWithViews().AddRazorRuntimeCompilation();
+
             services.AddControllersWithViews();
         }
 
@@ -83,6 +86,8 @@ namespace MyVet
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+                //endpoints.MapRazorPages();
             });
         }
     }

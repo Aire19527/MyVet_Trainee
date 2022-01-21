@@ -145,6 +145,5 @@ namespace MyVet.Domain.Services
         }
         #endregion
 
-
     }
 }
