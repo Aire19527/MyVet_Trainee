@@ -84,7 +84,7 @@ namespace MyVet.Domain.Services
         }
 
 
-        public async Task<ResponseDto> DeletePet(int idPet)
+        public async Task<ResponseDto> DeletePetAsync(int idPet)
         {
             ResponseDto response = new ResponseDto();
 
@@ -98,6 +98,61 @@ namespace MyVet.Domain.Services
             return response;
         }
 
+        public async Task<bool> InsertPetAsync(PetDto pet)
+        {
+            //PetEntity petEntity = new PetEntity()
+            //{
+            //    DateBorns = pet.DateBorns,
+            //    IdSex=  pet.IdSex,
+            //    IdTypePet= pet.IdTypePet,
+            //    Name= pet.Name, 
+            //};
+            //_unitOfWork.PetRepository.Insert(petEntity);
+
+            //UserPetEntity userPetEntity = new UserPetEntity()
+            //{
+            //    IdUser=pet.IdUser,
+            //    IdPet=petEntity.Id
+            //};
+            //_unitOfWork.UserPetRepository.Insert(userPetEntity);
+
+
+            UserPetEntity userPetEntity = new UserPetEntity()
+            {
+                IdUser = pet.IdUser,
+                PetEntity = new PetEntity()
+                {
+                    DateBorns = pet.DateBorns,
+                    IdSex = pet.IdSex,
+                    IdTypePet = pet.IdTypePet,
+                    Name = pet.Name,
+                }
+            };
+
+            _unitOfWork.UserPetRepository.Insert(userPetEntity);
+            return await _unitOfWork.Save() > 0;
+        }
+
+
+        public async Task<bool> UpdatePetAsync(PetDto pet)
+        {
+            bool result = false;
+
+            PetEntity petEntity = _unitOfWork.PetRepository.FirstOrDefault(x => x.Id == pet.Id);
+            if (petEntity != null)
+            {
+                petEntity.DateBorns = pet.DateBorns;
+                petEntity.IdSex = pet.IdSex;
+                petEntity.IdTypePet = pet.IdTypePet;
+                petEntity.Name = pet.Name;
+
+                _unitOfWork.PetRepository.Update(petEntity);
+
+                result = await _unitOfWork.Save() > 0;
+            }
+
+            return result;
+        }
         #endregion
     }
 }

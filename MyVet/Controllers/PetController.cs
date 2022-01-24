@@ -39,7 +39,7 @@ namespace MyVet.Controllers
         [HttpDelete]
         public async Task<IActionResult> DeletePet(int idPet)
         {
-            ResponseDto response = await _petServices.DeletePet(idPet);
+            ResponseDto response = await _petServices.DeletePetAsync(idPet);
             return Ok(response);
         }
 
@@ -54,6 +54,28 @@ namespace MyVet.Controllers
         public IActionResult GetAllTypePet()
         {
             List<TypePetDto> response = _petServices.GetAllTypePet();
+            return Ok(response);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> InsertPet(PetDto pet)
+        {
+            var user = HttpContext.User;
+            string idUser = user.Claims.FirstOrDefault(x => x.Type == TypeClaims.IdUser).Value;
+            pet.IdUser = Convert.ToInt32(idUser);
+
+            bool response = await _petServices.InsertPetAsync(pet);
+            return Ok(response);
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdatePet(PetDto pet)
+        {
+            //var user = HttpContext.User;
+            //string idUser = user.Claims.FirstOrDefault(x => x.Type == TypeClaims.IdUser).Value;
+            //pet.IdUser = Convert.ToInt32(idUser);
+
+            bool response = await _petServices.UpdatePetAsync(pet);
             return Ok(response);
         }
         #endregion
