@@ -8,7 +8,7 @@
 
 
 <p>
-    
+
     <button class="btn btn-primary" onclick="nuevaMascota()">
 
         <i class="fas fa-paw"></i> Nuevo Mascota
@@ -27,50 +27,83 @@
                 <th scope="col">Opciones</th>
             </tr>
         </thead>
-       
+
         <tbody id="cuerpoPets"></tbody>
     </table>
 
 </div>
 
 
-<!-- Vertically centered scrollable modal -->
-<div  class="modal-dialog modal-dialog-centered modal-dialog-scrollable" id="modalGuardarPet">
-  
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="idTituloModalPet">Crear Mascota</h5>
+            </div>
+            <div class="modal-body">
+                <form>
+
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label for="recipient-name" class="col-form-label">Nombre</label>
+                            <input type="text" class="form-control" id="txtNamePet" placeholder="Nombre mascota" required>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label for="recipient-name" class="col-form-label">Fecha Nacimiento</label>
+                            <input type="date" class="form-control" id="txtDateBornPet" required>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label class="control-label"> Sexo</label>
+                            <select id="cmbSex" class="form-control" required>
+                                <option> Seleccionar</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label class="control-label"> Tipo Mascota</label>
+                            <select id="cmbTypePet" class="form-control" required>
+                                <option> Seleccionar</option>
+                            </select>
+                        </div>
+                    </div>
+
+
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">
+                    <i class="fas fa-window-close"></i>
+                    Cancelar
+                </button>
+                <button type="button" class="btn btn-success" onclick="guardarPet()">
+                    <i class="far fa-save"></i>
+                    Guardar
+                </button>
+            </div>
+        </div>
+    </div>
 </div>
 
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">New message</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form>
-          <div class="mb-3">
-            <label for="recipient-name" class="col-form-label">Recipient:</label>
-            <input type="text" class="form-control" id="recipient-name">
-          </div>
-          <div class="mb-3">
-            <label for="message-text" class="col-form-label">Message:</label>
-            <textarea class="form-control" id="message-text"></textarea>
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Send message</button>
-      </div>
-    </div>
-  </div>
-</div>
 
 
 @section Scripts{
+  @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
 <script type="text/javascript" charset="utf-8">
 
     var listaPets= JSON.parse('@Json.Serialize(@Model)');
+    var listSexs=[];
+    var listTypePets=[];
+
+    let idSex='';
+    let idTypePet='';
+
     $(document).ready(function () {
         console.log("Hola mundo");
         console.log(listaPets);
@@ -79,7 +112,7 @@
 
     function eliminarPet(idPet)
     {
-        console.log("mandó a eliminar",idPet);
+        console.log("mandó a eliminar", idPet);
         Swal.fire({
             title: '¿Confirmar Eliminacion?',
             text: "No podrás revertir esto.!",
@@ -91,7 +124,9 @@
             confirmButtonText: 'Si, Eliminar!',
         }).then((result) => {
             if (result.isConfirmed) {
-                //petición 
+
+                modalProcesando(true);
+                //petición
                 $.ajax({
                     url: '@Url.Action("DeletePet", "Pet")',
                     method: 'DELETE',
@@ -100,9 +135,10 @@
                     },
                     dataType: "json",
                     success: function (data) {
+                        modalProcesando(false);
                         console.log(data);
                         if (data.isSuccess){
-                            
+
                             listaPets=listaPets.filter(x=>x.id!=idPet);
                             cargarGridPets(listaPets);
 
@@ -118,6 +154,7 @@
                         }
                      },
                      error: function (xhr, textStatus, errorThrown) {
+                         modalProcesando(false);
                          console.error(xhr, textStatus, errorThrown);
                      }
                   });
@@ -148,10 +185,124 @@
 
     function nuevaMascota(){
         console.log("crear mascota");
+
+           getSexs();
+           getTypePets();
        //$('#exampleModal').show()
-       $('#exampleModal').modal({keyboard:false});
+       $('#exampleModal').modal({keyboard:true});
 
     }
+
+    function getSexs()
+    {
+        //modalProcesando(true);
+        $.ajax({
+            url: '@Url.Action("GetAllSexs", "Pet")',
+            method: 'GET',
+            dataType: "json",
+            success: function (data) {
+                modalProcesando(false);
+                listSexs=data;
+                console.log(listSexs);
+                cargarSexs(listSexs);
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                    modalProcesando(false);
+                    console.error(xhr, textStatus, errorThrown);
+                }
+         });
+     }
+
+    function getTypePets()
+    {
+        $.ajax({
+            url: '@Url.Action("GetAllTypePet", "Pet")',
+            method: 'GET',
+            dataType: "json",
+            success: function (data) {
+                modalProcesando(false);
+                listTypePets=data;
+                cargarTypePets(listTypePets);
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                    modalProcesando(false);
+                    console.error(xhr, textStatus, errorThrown);
+                }
+         });
+     }
+
+        function cargarSexs(data, selected) {
+            $("#cmbSex").empty();
+            $("#cmbSex").append('<option value="" disabled selected>Seleccione un sexo</option>');
+            $.each(data, function (i, lista) {
+                if (data[i].idSex == selected) {
+                    $("#cmbSex").append('<option value="' + data[i].idSex + '"selected>' + data[i].sex + '</option>');
+                }
+                else {
+                    $("#cmbSex").append('<option value="' + data[i].idSex + '">' + data[i].sex + '</option>');
+                }
+            });
+        }
+
+        function cargarTypePets(data, selected) {
+            $("#cmbTypePet").empty();
+            $("#cmbTypePet").append('<option value="" disabled selected>Seleccione un Tipo Mascota</option>');
+            $.each(data, function (i, lista) {
+                if (data[i].idTypePet == selected) {
+                    $("#cmbTypePet").append('<option value="' + data[i].idTypePet + '"selected>' + data[i].typePet + '</option>');
+                }
+                else {
+                    $("#cmbTypePet").append('<option value="' + data[i].idTypePet + '">' + data[i].typePet + '</option>');
+                }
+            });
+        }
+
+        function guardarPet(){
+            console.log("Metodo de guardar");
+
+            //alert("seleccione el sexo");
+
+            if(validarForm())
+            {
+                toastMessage('success','formulario bueno');
+            }
+           
+        }
+
+        function validarForm()
+        {
+            if($("#txtNamePet").val()=='')
+            {
+                 $("#txtNamePet").focus();
+                 toastMessage('warning','El nombre es obligatorio.');
+                 return false;
+            }
+
+            if($("#txtDateBornPet").val()=='')
+            {
+                 $("#txtDateBornPet").focus();
+                 toastMessage('warning','La fecha de nacimeinto es obligatoria.');
+                 return false;
+            } 
+            
+            if(idSex=='')
+            {
+                 $("#cmbSex").focus();
+                 toastMessage('warning','El sexo es obligatorio.');
+                 return false;
+            }
+            
+            if(idTypePet=='')
+            {
+                 $("#cmbTypePet").focus();
+                 toastMessage('warning','El tipo mascota es obligatorio.');
+                 return false;
+            }
+
+
+
+            return true;
+        }
 
 </script>
 }

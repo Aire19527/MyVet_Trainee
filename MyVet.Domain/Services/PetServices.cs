@@ -57,7 +57,7 @@ namespace MyVet.Domain.Services
             return $"{meses} meses";
         }
 
-        public List<TypePetDto> GetAllTypePe()
+        public List<TypePetDto> GetAllTypePet()
         {
             List<TypePetEntity> typePets = _unitOfWork.TypePetRepository.GetAll().ToList();
 
@@ -91,7 +91,7 @@ namespace MyVet.Domain.Services
             _unitOfWork.PetRepository.Delete(idPet);
             response.IsSuccess = await _unitOfWork.Save() > 0;
             if (response.IsSuccess)
-                response.Message = "Se elminnó Correctamente la Mascota";
+                response.Message = "Se elminnó correctamente la Mascota";
             else
                 response.Message = "Hubo un error al eliminar la Mascota, por favor vuelva a intentalo";
 

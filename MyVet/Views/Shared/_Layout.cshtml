@@ -16,6 +16,17 @@
 </head>
 <body>
 
+    <div class="modal fade" id="container-modal-procesando" tabindex="-1" role="dialog" data-backdrop="static" aria-hidden="true" style="display:none">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-body" style="text-align:center;font-weight:bold">
+                    <p id="mensaje-modal-procesando">Por favor espere</p>
+                    <div align="center"><img width="100%" src="~/img/loading-97.gif"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
@@ -74,7 +85,46 @@
             crossorigin="anonymous"
             referrerpolicy="no-referrer"></script>
 
-     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.3.6/dist/sweetalert2.all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.3.6/dist/sweetalert2.all.min.js"></script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>
+
+<script>
+    $(document).ready(function () {
+
+     });
+
+     function modalProcesando(desplegar)
+     {
+         if(desplegar)
+         {
+            $('#container-modal-procesando').modal('show');
+         }else{
+            setTimeout(function () {
+                    $('#container-modal-procesando').modal('hide');
+            }, 500);
+         }
+     }
+
+     function toastMessage(type,message)
+     {
+         const Toast = Swal.mixin({
+             toast: true,
+             position: 'top-end',
+             showConfirmButton: false,
+             timer: 3000,
+             timerProgressBar: true,
+             didOpen: (toast) => {
+                 toast.addEventListener('mouseenter', Swal.stopTimer)
+                 toast.addEventListener('mouseleave', Swal.resumeTimer)
+             }});
+
+             Toast.fire({
+                 icon: type,
+                 title: message
+             });
+     }
+
+
+</script>

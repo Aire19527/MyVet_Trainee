@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using MyVet.Domain.Dto;
 using MyVet.Domain.Services.Interface;
 using System;
@@ -39,6 +40,20 @@ namespace MyVet.Controllers
         public async Task<IActionResult> DeletePet(int idPet)
         {
             ResponseDto response = await _petServices.DeletePet(idPet);
+            return Ok(response);
+        }
+
+        [HttpGet]
+        public IActionResult GetAllSexs()
+        {
+            List<SexDto> response = _petServices.GetAllSexs();
+            return Ok(response);
+        }
+
+        [HttpGet]
+        public IActionResult GetAllTypePet()
+        {
+            List<TypePetDto> response = _petServices.GetAllTypePet();
             return Ok(response);
         }
         #endregion
