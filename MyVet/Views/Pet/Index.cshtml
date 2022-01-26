@@ -220,6 +220,7 @@
             getTypePets();
         }
 
+       $('#idTituloModalPet').html("Crear Mascota");
        $('#modalPet').modal({keyboard:true});
 
     }
@@ -454,14 +455,8 @@
         cargarSexs(listSexs,pet.idSex);
         cargarTypePets(listTypePets,pet.idTypePet);
 
-
+       $('#idTituloModalPet').html("Editar Mascota");
        $('#modalPet').modal({keyboard:true});
-
-
-
-
-
-        console.log(pet);
     }
 
 
