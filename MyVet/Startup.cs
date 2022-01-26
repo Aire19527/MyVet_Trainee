@@ -81,6 +81,8 @@ namespace MyVet
             //#2
             app.UseAuthorization();
 
+           
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

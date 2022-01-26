@@ -1,6 +1,4 @@
-﻿@model IEnumerable<MyVet.Domain.Dto.PetDto>
-
-@{
+﻿@{
     ViewData["Title"] = "Mis Mascotas";
 }
 
@@ -35,7 +33,8 @@
 
 
 
-<div class="modal fade" id="modalPet" tabindex="-1" role="dialog" aria-labelledby="modalPetLabel" aria-hidden="true">
+<div class="modal fade" id="modalPet" tabindex="1" role="dialog" aria-labelledby="modalPetLabel" aria-hidden="true">
+
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -90,6 +89,7 @@
 
 
 
+
 @section Scripts{
   @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
@@ -97,7 +97,8 @@
 
 <script type="text/javascript" charset="utf-8">
 
-    var listaPets= JSON.parse('@Json.Serialize(@Model)');
+    //var listaPets= JSON.parse('@Json.Serialize(@Model)');
+    var listaPets= [];
     var listSexs=[];
     var listTypePets=[];
 
@@ -106,8 +107,54 @@
     let idPet='';
 
     $(document).ready(function () {
-        cargarGridPets(listaPets);
+        
+        
+       getAllMyPets();
+       getSexs();
+       getTypePets();
     });
+
+    function getAllMyPets()
+    {
+        modalProcesando(true);
+        $.ajax({
+            url: '@Url.Action("GetAllMyPets", "Pet")',
+            method: 'GET',
+            dataType: "json",
+            success: function (data) {
+                modalProcesando(false);
+
+                listaPets=data;
+                cargarGridPets(listaPets);
+                console.log(listaPets);
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                    modalProcesando(false);
+                    console.error(xhr, textStatus, errorThrown);
+                }
+         });
+    }
+
+    function cargarGridPets(data){
+        $("#cuerpoPets").html("");
+
+        for(var i=0; i<data.length; i++){
+            var tr=`
+             <tr>
+                <th>`+ data[i].name+ `</th>
+                <th> `+ data[i].edad +`</th>
+                <th> `+ data[i].typePet +`</th>
+                <th> `+ data[i].sexo + `</th>
+                <td>
+                <button  class="btn btn-warning" onclick="editarPet(`+ data[i].id +`)"><i class="fas fa-edit"></i> Editar</button>
+                <button class="btn btn-danger" onclick="eliminarPet(`+ data[i].id +`)"><i class="far fa-trash-alt"></i> Eliminar</button>
+                </td>
+            </tr>
+            `;
+            $("#cuerpoPets").append(tr);
+        }
+    }
+
 
     function eliminarPet(idPet)
     {
@@ -162,25 +209,6 @@
             });
         }
 
-    function cargarGridPets(data){
-        $("#cuerpoPets").html("");
-
-        for(var i=0; i<data.length; i++){
-            var tr=`
-             <tr>
-                <th>`+ data[i].name+ `</th>
-                <th> `+ data[i].edad +`</th>
-                <th> `+ data[i].typePet +`</th>
-                <th> `+ data[i].sexo + `</th>
-                <td>
-                <button  class="btn btn-warning"><i class="fas fa-edit"></i> Editar</button>
-                <button class="btn btn-danger" onclick="eliminarPet(`+ data[i].id +`)"><i class="far fa-trash-alt"></i> Eliminar</button>
-                </td>
-            </tr>
-            `;
-            $("#cuerpoPets").append(tr);
-        }
-    }
 
     function nuevaMascota(){
 
@@ -191,7 +219,7 @@
         if(listTypePets.length==0){
             getTypePets();
         }
-       
+
        $('#modalPet').modal({keyboard:true});
 
     }
@@ -265,15 +293,13 @@
 
         if(validarForm())
         {
-            //toastMessage('success','formulario bueno');
-
             let parametro={
                 DateBorns:$("#txtDateBornPet").val(),
                 Name:$("#txtNamePet").val(),
                 IdSex:idSex,
                 IdTypePet:idTypePet,
             };
-            
+
 
             if(idPet=='')
             {
@@ -285,18 +311,19 @@
                     dataType: "json",
                     success: function (data) {
                         modalProcesando(false);
-                       
+
                         console.log(listaPets);
 
                         if (data){
-                            $('#modalPet').modal('hide'); 
+                            $('#modalPet').modal('hide');
                             limpiarForm();
                             toastMessage('success','Mascota guardada exitosamente!');
+                            getAllMyPets();
                         }else{
                              toastMessage('error','Hubo un error al guardar, por favor intentarlo nuevamente!');
                         }
 
-                        
+
                     },
                     error: function (xhr, textStatus, errorThrown) {
                             modalProcesando(false);
@@ -312,23 +339,24 @@
                 modalProcesando(true);
                 $.ajax({
                     url: '@Url.Action("UpdatePet", "Pet")',
-                    method: 'POST',
+                    method: 'PUT',
                     data:parametro,
                     dataType: "json",
                     success: function (data) {
                         modalProcesando(false);
-                       
+
                         console.log(listaPets);
 
                         if (data){
-                            $('#modalPet').modal('hide'); 
+                            $('#modalPet').modal('hide');
                             limpiarForm();
                             toastMessage('success','Mascota guardada exitosamente!');
+                            getAllMyPets();
                         }else{
                              toastMessage('error','Hubo un error al guardar, por favor intentarlo nuevamente!');
                         }
 
-                        
+
                     },
                     error: function (xhr, textStatus, errorThrown) {
                             modalProcesando(false);
@@ -337,9 +365,7 @@
                         }
                  });
             }
-
         }
-
     }
 
     function validarForm()
@@ -384,6 +410,9 @@
        idSex='';
        idTypePet='';
        idPet='';
+
+       cargarSexs(listSexs);
+       cargarTypePets(listTypePets);
     }
 
     function seleccionarSexo()
@@ -402,7 +431,40 @@
         idTypePet=selected;
     }
 
-    
+
+    function editarPet(id)
+    {
+        idPet=id;
+        let pet= listaPets.find(x=>x.id==idPet);
+
+        idTypePet=pet.idTypePet;
+        idSex=pet.idSex;
+
+        $('#txtNamePet').val(pet.name);
+
+        //setear fechas
+        var now = new Date(pet.dateBorns);
+        var day = ("0" + now.getDate()).slice(-2);
+        var month = ("0" + (now.getMonth() + 1)).slice(-2);
+        var today = now.getFullYear()+"-"+(month)+"-"+(day);
+
+        $('#txtDateBornPet').val(today)
+
+
+        cargarSexs(listSexs,pet.idSex);
+        cargarTypePets(listTypePets,pet.idTypePet);
+
+
+       $('#modalPet').modal({keyboard:true});
+
+
+
+
+
+        console.log(pet);
+    }
+
+
 
 </script>
 }

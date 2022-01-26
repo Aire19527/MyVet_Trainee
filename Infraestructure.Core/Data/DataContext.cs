@@ -43,10 +43,6 @@ namespace Infraestructure.Core.Data
             modelBuilder.Entity<StateEntity>().Property(t => t.IdState).ValueGeneratedNever();
             modelBuilder.Entity<RolEntity>().Property(t => t.IdRol).ValueGeneratedNever();
             modelBuilder.Entity<PermissionEntity>().Property(t => t.IdPermission).ValueGeneratedNever();
-
         }
-
-
-
     }
 }

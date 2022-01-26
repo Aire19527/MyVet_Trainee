@@ -52,9 +52,19 @@ namespace MyVet.Domain.Services
 
         private string CalculateAge(DateTime dateBorn)
         {
-            int meses = Math.Abs((DateTime.Now.Month - dateBorn.Month) + 12 * (DateTime.Now.Year - dateBorn.Year));
+            string result = string.Empty;
 
-            return $"{meses} meses";
+            int age = Math.Abs((DateTime.Now.Month - dateBorn.Month) + 12 * (DateTime.Now.Year - dateBorn.Year));
+
+            if (age != 0)
+                result = $"{age} meses";
+            else
+            {
+                TimeSpan resultDate = DateTime.Now.Date - dateBorn.Date;
+                result = $"{resultDate.Days} días";
+            }
+
+            return result;
         }
 
         public List<TypePetDto> GetAllTypePet()

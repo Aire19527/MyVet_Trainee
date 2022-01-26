@@ -16,17 +16,6 @@
 </head>
 <body>
 
-    <div class="modal fade" id="container-modal-procesando" tabindex="-1" role="dialog" data-backdrop="static" aria-hidden="true" style="display:none">
-        <div class="modal-dialog modal-sm">
-            <div class="modal-content">
-                <div class="modal-body" style="text-align:center;font-weight:bold">
-                    <p id="mensaje-modal-procesando">Por favor espere</p>
-                    <div align="center"><img width="100%" src="~/img/loading-97.gif"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
@@ -72,6 +61,17 @@
         </main>
     </div>
 
+    <div class="modal fade" id="container-modal-procesando" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body" style="text-align:center;font-weight:bold">
+                    <p id="mensaje-modal-procesando">Por favor espere</p>
+                    <div align="center"><img width="100%" src="~/img/loading-97.gif"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <footer class="border-top footer text-muted">
         <div class="container">
             &copy; 2022 - MyVet - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
@@ -99,7 +99,7 @@
      {
          if(desplegar)
          {
-            $('#container-modal-procesando').modal('show');
+            $("#container-modal-procesando").modal({ backdrop: 'static', keyboard: false });
          }else{
             setTimeout(function () {
                     $('#container-modal-procesando').modal('hide');
