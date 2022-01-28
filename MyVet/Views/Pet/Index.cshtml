@@ -107,8 +107,6 @@
     let idPet='';
 
     $(document).ready(function () {
-        
-        
        getAllMyPets();
        getSexs();
        getTypePets();
@@ -333,9 +331,7 @@
                         }
                  });
             }else{
-                parametro.Id=idPet;
-                console.log(parametro);
-                console.log('actualizar');
+                parametro.Id=idPet;              
 
                 modalProcesando(true);
                 $.ajax({
