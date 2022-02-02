@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using MyVet.Domain.Dto;
 using MyVet.Domain.Services.Interface;
+using MyVet.Handlers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,7 @@ using static Common.Utils.Constant.Const;
 
 namespace MyVet.Controllers
 {
+    [TypeFilter(typeof(CustomExceptionHandler))]
     public class AuthController : Controller
     {
         private readonly IUserServices _userServices;

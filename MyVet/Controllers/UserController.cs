@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using MyVet.Domain.Services.Interface;
+using MyVet.Handlers;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -12,6 +13,7 @@ using static Common.Utils.Constant.Const;
 namespace MyVet.Controllers
 {
     [Authorize]
+    [TypeFilter(typeof(CustomExceptionHandler))]
     public class UserController : Controller
     {
         private readonly IUserServices _userServices;

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using MyVet.Domain.Dto;
 using MyVet.Domain.Services.Interface;
+using MyVet.Handlers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,7 @@ using static Common.Utils.Constant.Const;
 namespace MyVet.Controllers
 {
     [Authorize]
+    [TypeFilter(typeof(CustomExceptionHandler))]
     public class PetController : Controller
     {
         #region Attribute

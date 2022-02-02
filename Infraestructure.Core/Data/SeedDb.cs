@@ -1,6 +1,7 @@
 ﻿using Common.Utils.Enums;
 using Infraestructure.Entity.Model;
 using Infraestructure.Entity.Model.Master;
+using Infraestructure.Entity.Model.Vet;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,14 +31,9 @@ namespace Infraestructure.Core.Data
             await CheckPermissionAsync();
             await CheckRolAsync();
             await CheckRolPermissonAsync();
+            await CheckServicesAsync();
 
-            //await CheckTypeIdentificationAsync();
-            //await CheckUserAsync();
-            //await CheckRolUserAsync();
-            //await CheckCategory();
         }
-
-      
 
         private async Task CheckTypeStateAsync()
         {
@@ -296,7 +292,6 @@ namespace Infraestructure.Core.Data
             }
         }
 
-
         private async Task CheckRolAsync()
         {
             if (!_context.RolEntity.Any())
@@ -341,5 +336,31 @@ namespace Infraestructure.Core.Data
             }
         }
 
+        private async Task CheckServicesAsync()
+        {
+            if (!_context.ServicesEtntity.Any())
+            {
+                _context.ServicesEtntity.AddRange(new List<ServicesEtntity>
+                {
+                    new ServicesEtntity
+                    {
+                        Services="Consulta General",
+                        Description="Consulta general de una mascota"
+                    },
+                    new ServicesEtntity
+                    {
+                        Services="Motilada",
+                        Description="Motilada de la mascota"
+                    },
+                    new ServicesEtntity
+                    {
+                        Services="Cortar Uñas",
+                        Description="Cortar uñas a un perro o gato"
+                    },
+                });
+
+                await _context.SaveChangesAsync();
+            }
+        }
     }
 }
