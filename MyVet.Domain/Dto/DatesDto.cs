@@ -20,7 +20,9 @@ namespace MyVet.Domain.Dto
         public int IdState { get; set; }
 
         [MaxLength(300)]
-        public string Description { get; set; }
+        public string Description { get; set; } 
+        [MaxLength(300)]
+        public string Observation { get; set; }
 
         public int? IdUserVet { get; set; }
 

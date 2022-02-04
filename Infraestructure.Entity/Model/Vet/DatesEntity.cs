@@ -34,7 +34,10 @@ namespace Infraestructure.Entity.Model.Vet
         public StateEntity StateEntity { get; set; }
 
         [MaxLength(300)]
-        public string Description { get; set; }
+        public string Description { get; set; } 
+        
+        [MaxLength(300)]
+        public string Observation { get; set; }
 
         [ForeignKey("UserVetEntity")]
         public int? IdUserVet { get; set; }

@@ -15,6 +15,10 @@ namespace MyVet.Domain.Services.Interface
         Task<ResponseDto> DeleteDatesAsync(int idDates);
         List<ServicesEtntity> GetAllServices();
 
-        Task<bool> CancelDatesAsync(int idDates);
+        Task<bool> CancelDatesAsync(int idDates, int? idUserVet);
+
+
+        List<DatesDto> GetAllDates(int idUser);
+        Task<bool> UpdateDatesVetAsync(DatesDto data);
     }
 }
