@@ -1,5 +1,14 @@
-﻿@using Microsoft.AspNetCore.Identity
+﻿@using Common.Utils.Enums
+@using Microsoft.AspNetCore.Identity
+@using static Common.Utils.Constant.Const
+@{
+    var idRols = User.Claims.FirstOrDefault(x => x.Type == TypeClaims.IdRol).Value;
 
+    bool isAdmin = idRols.Any(x => x.ToString() ==Convert.ToInt32(Enums.RolUser.Administrador).ToString());
+    bool isVet = idRols.Any(x => x.ToString() == Convert.ToInt32(Enums.RolUser.Veterinario).ToString());
+    bool isStandar = idRols.Any(x => x.ToString() == Convert.ToInt32(Enums.RolUser.Estandar).ToString());
+
+}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -39,20 +48,39 @@
                         }
                     </ul>
 
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">Usuarios</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Pet" asp-action="Index">Mis Mascotas</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Dates" asp-action="Index">Mis Citas</a>
-                        </li>
 
-                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Dates" asp-action="DatesVet">Citas Activas</a>
-                        </li>
+                    <ul class="navbar-nav flex-grow-1">
+                        @if (isAdmin)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">Usuarios</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Pet" asp-action="Index">Mis Mascotas</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Dates" asp-action="Index">Mis Citas</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Dates" asp-action="DatesVet">Citas Disponibles</a>
+                            </li>
+                        }
+                        else if (isVet)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Dates" asp-action="DatesVet">Citas Disponibles</a>
+                            </li>
+                        }
+                        else if (isStandar)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Pet" asp-action="Index">Mis Mascotas</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Dates" asp-action="Index">Mis Citas</a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>

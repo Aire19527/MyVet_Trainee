@@ -1,8 +1,16 @@
-﻿@{
+﻿@using Common.Utils.Enums
+@using static Common.Utils.Constant.Const
+@{
     ViewData["Title"] = "Citas Activas";
-}
+      var idRols = User.Claims.FirstOrDefault(x => x.Type == TypeClaims.IdRol).Value;
 
-<h1>Listado de Citas Activas</h1>
+    bool isAdmin = idRols.Any(x => x.ToString() == Convert.ToInt32(Enums.RolUser.Administrador).ToString());
+    bool isVet = idRols.Any(x => x.ToString() == Convert.ToInt32(Enums.RolUser.Veterinario).ToString());
+    
+}
+@if (isAdmin || isVet)
+{
+    <h1>Listado de Citas Activas</h1>
 
 <div class="row">
 
@@ -429,4 +437,19 @@
 
 
 </script>
+}
+
+}
+else
+{
+    @section Scripts{
+        <script type="text/javascript" charset="utf-8">
+              $(document).ready(function () {
+                    Swal.fire(
+                                 '¡Usuario no Autorizado!',
+                                 'No tiene suficientes privilegios para ver esta sección.',
+                                 'error');
+              });
+        </script>
+     }
 }

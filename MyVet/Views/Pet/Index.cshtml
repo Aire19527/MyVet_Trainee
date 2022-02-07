@@ -1,93 +1,103 @@
-﻿@{
+﻿@using Common.Utils.Enums
+@using static Common.Utils.Constant.Const
+@{
     ViewData["Title"] = "Mis Mascotas";
+    var idRols = User.Claims.FirstOrDefault(x => x.Type == TypeClaims.IdRol).Value;
+
+    bool isAdmin = idRols.Any(x => x.ToString() == Convert.ToInt32(Enums.RolUser.Administrador).ToString());
+    bool isStandar = idRols.Any(x => x.ToString() == Convert.ToInt32(Enums.RolUser.Estandar).ToString());
+
 }
 
-<h1>Listado de mascotas</h1>
+
+@if (isAdmin || isStandar)
+{
+    <h1>Listado de mascotas</h1>
 
 
-<p>
+    <p>
 
-    <button class="btn btn-primary" onclick="nuevaMascota()">
+        <button class="btn btn-primary" onclick="nuevaMascota()">
 
-        <i class="fas fa-paw"></i> Nuevo Mascota
-    </button>
-</p>
+            <i class="fas fa-paw"></i> Nuevo Mascota
+        </button>
+    </p>
 
-<div class="row">
+    <div class="row">
 
-    <table class="table">
-        <thead class="thead-dark">
-            <tr>
-                <th scope="col">Nombre</th>
-                <th scope="col">Edad</th>
-                <th scope="col">Tipo</th>
-                <th scope="col">Sexo</th>
-                <th scope="col">Opciones</th>
-            </tr>
-        </thead>
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Edad</th>
+                    <th scope="col">Tipo</th>
+                    <th scope="col">Sexo</th>
+                    <th scope="col">Opciones</th>
+                </tr>
+            </thead>
 
-        <tbody id="cuerpoPets"></tbody>
-    </table>
+            <tbody id="cuerpoPets"></tbody>
+        </table>
 
-</div>
+    </div>
 
 
-@*modal*@
-<div class="modal fade" id="modalPet" tabindex="1" role="dialog" aria-labelledby="modalPetLabel" aria-hidden="true">
+    @*modal*@
+    <div class="modal fade" id="modalPet" tabindex="1" role="dialog" aria-labelledby="modalPetLabel" aria-hidden="true">
 
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="idTituloModalPet">Crear Mascota</h5>
-            </div>
-            <div class="modal-body">
-                <form>
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="idTituloModalPet">Crear Mascota</h5>
+                </div>
+                <div class="modal-body">
+                    <form>
 
-                    <div class="row">
-                        <div class="col-md-6 form-group">
-                            <label for="recipient-name" class="col-form-label">Nombre</label>
-                            <input type="text" class="form-control" id="txtNamePet" placeholder="Nombre mascota" required>
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label for="recipient-name" class="col-form-label">Nombre</label>
+                                <input type="text" class="form-control" id="txtNamePet" placeholder="Nombre mascota" required>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label for="recipient-name" class="col-form-label">Fecha Nacimiento</label>
+                                <input type="date" class="form-control" id="txtDateBornPet" required>
+                            </div>
                         </div>
-                        <div class="col-md-6 form-group">
-                            <label for="recipient-name" class="col-form-label">Fecha Nacimiento</label>
-                            <input type="date" class="form-control" id="txtDateBornPet" required>
+
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label class="control-label"> Sexo</label>
+                                <select id="cmbSex" class="form-control" onchange="seleccionarSexo()" required>
+                                    <option> Seleccionar</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label class="control-label"> Tipo Mascota</label>
+                                <select id="cmbTypePet" class="form-control" onchange="seleccionarTipoMascota()" required>
+                                    <option> Seleccionar</option>
+                                </select>
+                            </div>
                         </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6 form-group">
-                            <label class="control-label"> Sexo</label>
-                            <select id="cmbSex" class="form-control" onchange="seleccionarSexo()" required>
-                                <option> Seleccionar</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6 form-group">
-                            <label class="control-label"> Tipo Mascota</label>
-                            <select id="cmbTypePet" class="form-control" onchange="seleccionarTipoMascota()" required>
-                                <option> Seleccionar</option>
-                            </select>
-                        </div>
-                    </div>
 
 
 
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-dismiss="modal">
-                    <i class="fas fa-window-close"></i>
-                    Cancelar
-                </button>
-                <button type="button" class="btn btn-success" onclick="guardarPet()">
-                    <i class="far fa-save"></i>
-                    Guardar
-                </button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">
+                        <i class="fas fa-window-close"></i>
+                        Cancelar
+                    </button>
+                    <button type="button" class="btn btn-success" onclick="guardarPet()">
+                        <i class="far fa-save"></i>
+                        Guardar
+                    </button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-@section Scripts{
+    @section Scripts{
   @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
@@ -328,7 +338,7 @@
                         }
                  });
             }else{
-                parametro.Id=idPet;              
+                parametro.Id=idPet;
 
                 modalProcesando(true);
                 $.ajax({
@@ -455,4 +465,19 @@
 
 
 </script>
+}
+
+}
+else
+{
+    @section Scripts{
+<script type="text/javascript" charset="utf-8">
+    $(document).ready(function () {
+          Swal.fire(
+                       '¡Usuario no Autorizado!',
+                       'No tiene suficientes privilegios para ver esta sección.',
+                       'error');
+    });
+</script>
+     }
 }

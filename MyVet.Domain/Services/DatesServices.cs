@@ -64,7 +64,8 @@ namespace MyVet.Domain.Services
                                                              p => p.ServicesEtntity);
 
 
-            var datesDeleteList = dates.Where(x => (x.IdState == (int)Enums.State.CitaCancelada && x.IdUserVet == null)).ToList();
+            var datesDeleteList = dates.Where(x => (x.IdState == (int)Enums.State.CitaCancelada
+                                                  && x.IdUserVet == null)).ToList();
 
 
             var datesSelect = (from t in dates
