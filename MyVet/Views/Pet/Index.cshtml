@@ -128,10 +128,22 @@
             dataType: "json",
             success: function (data) {
                 modalProcesando(false);
+                console.log(data);
+                if(data.isSuccess)
+                {
+                    listaPets=data.result;
+                    cargarGridPets(listaPets);
+                    console.log(listaPets);
+                }else{
+                    Swal.fire(
+                                'Opps!',
+                                data.message,
+                                'error');
+                }
 
-                listaPets=data;
-                cargarGridPets(listaPets);
-                console.log(listaPets);
+                
+
+               
             },
             error: function (xhr, textStatus, errorThrown) {
                     modalProcesando(false);

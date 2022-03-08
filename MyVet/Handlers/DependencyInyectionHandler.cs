@@ -1,4 +1,6 @@
-﻿using Infraestructure.Core.Data;
+﻿using Common.Utils.RestServices;
+using Common.Utils.RestServices.Interface;
+using Infraestructure.Core.Data;
 using Infraestructure.Core.Repository;
 using Infraestructure.Core.Repository.Interface;
 using Infraestructure.Core.UnitOfWork;
@@ -28,6 +30,9 @@ namespace MyVet.Handlers
             services.AddTransient<IRolServices, RolServices>();
             services.AddTransient<IPetServices, PetServices>();
             services.AddTransient<IDatesServices, DatesServices>();
+
+            //rest services - consumer
+            services.AddTransient<IRestService, RestService>();
         }
     }
 }
