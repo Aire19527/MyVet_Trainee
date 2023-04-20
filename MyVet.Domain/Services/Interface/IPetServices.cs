@@ -6,8 +6,8 @@ namespace MyVet.Domain.Services.Interface
 {
     public interface IPetServices
     {
-        //Task<List<PetDto>> GetAllMyPets(string token);
-        Task<ResponseDto> GetAllMyPets(string token);
+        List<PetDto> GetAllPets();
+        List<PetDto> GetAllMyPets(int idUser);
         List<TypePetDto> GetAllTypePet();
         List<SexDto> GetAllSexs();
         Task<ResponseDto> DeletePetAsync(int idPet);

@@ -49,7 +49,8 @@ namespace MyVet.Domain.Services
                 Estado = x.StateEntity.State,
                 Mascota = $"{x.PetEntity.Name}  [{x.PetEntity.TypePetEntity.TypePet}]",
                 Servicio = x.ServicesEtntity.Services,
-                StrDate = x.Date.ToString("yyyy-MM-dd")
+                StrDate = x.Date.ToString("yyyy-MM-dd"),
+                Observation = x.Observation
             }).OrderByDescending(f => f.Date).ToList();
 
             return listDates;
@@ -64,17 +65,17 @@ namespace MyVet.Domain.Services
                                                              p => p.ServicesEtntity);
 
 
-            var datesDeleteList = dates.Where(x => (x.IdState == (int)Enums.State.CitaCancelada
-                                                  && x.IdUserVet == null)).ToList();
+            //var datesDeleteList = dates.Where(x => (x.IdState == (int)Enums.State.CitaCancelada
+            //                                      && x.IdUserVet == null)).ToList();
 
 
-            var datesSelect = (from t in dates
-                               where !datesDeleteList.Any(x => x.Id == t.Id)
-                               select t).ToList();
+            //var datesSelect = (from t in dates
+            //                   where !datesDeleteList.Any(x => x.Id == t.Id)
+            //                   select t).ToList();
 
 
 
-            List<DatesDto> listDates = datesSelect.Select(x => new DatesDto
+            List<DatesDto> listDates = dates.Select(x => new DatesDto
             {
                 Id = x.Id,
                 Contact = x.Contact,
@@ -89,7 +90,8 @@ namespace MyVet.Domain.Services
                 Estado = x.StateEntity.State,
                 Mascota = $"{x.PetEntity.Name}  [{x.PetEntity.TypePetEntity.TypePet}]",
                 Servicio = x.ServicesEtntity.Services,
-                StrDate = x.Date.ToString("yyyy-MM-dd")
+                StrDate = x.Date.ToString("yyyy-MM-dd"),
+                Observation=x.Observation
             }).OrderByDescending(f => f.Date).ToList();
 
             return listDates;
@@ -181,7 +183,13 @@ namespace MyVet.Domain.Services
             {
                 dates.IdState = (int)Enums.State.CitaCancelada;
                 dates.ClosingDate = DateTime.Now;
-                dates.IdUserVet = idUserVet ?? null;
+                dates.IdUserVet = idUserVet;
+
+                if (idUserVet != null)
+                    dates.Observation = "Cita cancelada por el veterinario.";
+                else
+                    dates.Observation = "Cita cancelada por el usuario.";
+
                 _unitOfWork.DatesRepository.Update(dates);
                 result = await _unitOfWork.Save() > 0;
             }

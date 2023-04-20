@@ -4,7 +4,7 @@
 @{
     var idRols = User.Claims.FirstOrDefault(x => x.Type == TypeClaims.IdRol).Value;
 
-    bool isAdmin = idRols.Any(x => x.ToString() ==Convert.ToInt32(Enums.RolUser.Administrador).ToString());
+    bool isAdmin = idRols.Any(x => x.ToString() == Convert.ToInt32(Enums.RolUser.Administrador).ToString());
     bool isVet = idRols.Any(x => x.ToString() == Convert.ToInt32(Enums.RolUser.Veterinario).ToString());
     bool isStandar = idRols.Any(x => x.ToString() == Convert.ToInt32(Enums.RolUser.Estandar).ToString());
 
@@ -22,6 +22,11 @@
           integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ=="
           crossorigin="anonymous"
           referrerpolicy="no-referrer" />
+
+    @*Datable*@
+    <link rel="stylesheet" href="~/lib/dataTable/datatables.min.css" />
+    <link rel="stylesheet" href="~/lib/dataTable/DataTables-1.13.3/css/dataTables.bootstrap4.min.css" />
+    <link rel="stylesheet" href="~/lib/dataTable/Buttons-2.3.5/css/buttons.bootstrap4.min.css" />
 </head>
 <body>
 
@@ -56,10 +61,7 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">Usuarios</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Pet" asp-action="Index">Mis Mascotas</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Dates" asp-action="Index">Mis Citas</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Pet" asp-action="Index">Mascotas</a>
                             </li>
 
                             <li class="nav-item">
@@ -118,6 +120,13 @@
             referrerpolicy="no-referrer"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.3.6/dist/sweetalert2.all.min.js"></script>
+
+    @*datable*@
+    <script src="~/lib/dataTable/datatables.min.js"></script>
+    <script src="~/lib/dataTable/DataTables-1.13.3/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/lib/dataTable/Buttons-2.3.5/js/buttons.bootstrap4.min.js"></script>
+
+
     @RenderSection("Scripts", required: false)
 </body>
 </html>
@@ -125,38 +134,36 @@
 <script>
     $(document).ready(function () {
 
-     });
+    });
 
-     function modalProcesando(desplegar)
-     {
-         if(desplegar)
-         {
+    function modalProcesando(desplegar) {
+        if (desplegar) {
             $("#container-modal-procesando").modal({ backdrop: 'static', keyboard: false });
-         }else{
+        } else {
             setTimeout(function () {
-                    $('#container-modal-procesando').modal('hide');
+                $('#container-modal-procesando').modal('hide');
             }, 500);
-         }
-     }
+        }
+    }
 
-     function toastMessage(type,message)
-     {
-         const Toast = Swal.mixin({
-             toast: true,
-             position: 'top-end',
-             showConfirmButton: false,
-             timer: 3000,
-             timerProgressBar: true,
-             didOpen: (toast) => {
-                 toast.addEventListener('mouseenter', Swal.stopTimer)
-                 toast.addEventListener('mouseleave', Swal.resumeTimer)
-             }});
+    function toastMessage(type, message) {
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        });
 
-             Toast.fire({
-                 icon: type,
-                 title: message
-             });
-     }
+        Toast.fire({
+            icon: type,
+            title: message
+        });
+    }
 
 
 </script>

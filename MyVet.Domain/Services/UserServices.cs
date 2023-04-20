@@ -19,54 +19,36 @@ namespace MyVet.Domain.Services
     {
         #region Attribute
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IRestService _restService;
-        private readonly IConfiguration _config;
         #endregion
 
         #region Builder
-        public UserServices(IUnitOfWork unitOfWork, IRestService restService, IConfiguration config)
+        public UserServices(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _restService = restService;
-            _config = config;
         }
         #endregion
 
         #region authentication
 
-        public async Task<ResponseDto> Login(UserDto user)
+        public ResponseDto Login(UserDto user)
         {
-            string urlBase = _config.GetSection("ApiMyVet").GetSection("UrlBase").Value;
-            string controller = _config.GetSection("ApiMyVet").GetSection("ControlerAuthentication").Value;
-            string method = _config.GetSection("ApiMyVet").GetSection("MethodLogin").Value;
-
-            LoginDto parameters = new LoginDto()
+            ResponseDto response = new ResponseDto();
+            UserEntity result = _unitOfWork.UserRepository.FirstOrDefault(x => x.Email == user.UserName
+                                                                            && x.Password == user.Password,
+                                                                           r => r.RolUserEntities);
+            if (result == null)
             {
-                Password=user.Password,
-                UserName=user.UserName, 
-            };
-            Dictionary<string, string> headers = new Dictionary<string, string>();
-            ResponseDto resultToken =await _restService.PostRestServiceAsync<ResponseDto>(urlBase, controller, method, parameters, headers);
+                response.Message = "Usuario o contraseña inválida!";
+                response.IsSuccess = false;
+            }
+            else
+            {
+                response.Result = result;
+                response.IsSuccess = true;
+                response.Message = "Usuario autenticado!";
+            }
 
-            return resultToken;
-
-            //ResponseDto response = new ResponseDto();
-            //UserEntity result = _unitOfWork.UserRepository.FirstOrDefault(x => x.Email == user.UserName
-            //                                                                && x.Password == user.Password,
-            //                                                               r => r.RolUserEntities);
-            //if (result == null)
-            //{
-            //    response.Message = "Usuario o contraseña inválida!";
-            //    response.IsSuccess = false;
-            //}
-            //else
-            //{
-            //    response.Result = result;
-            //    response.IsSuccess = true;
-            //    response.Message = "Usuario autenticado!";
-            //}
-
-            //return response;
+            return response;
         }
 
         #endregion

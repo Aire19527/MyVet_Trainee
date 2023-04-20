@@ -50,7 +50,7 @@ namespace MyVet.Controllers
         public IActionResult GetAllDates()
         {
             var user = HttpContext.User;
-            string idUser = user.Claims.FirstOrDefault(x => x.Type == TypeClaims.IdUser).Value;
+            string idUser = user.Claims.FirstOrDefault(x => x.Type == TypeClaims.IdUser)!.Value;
 
             List<DatesDto> result = _datesServices.GetAllDates(Convert.ToInt32(idUser));
             return Ok(result);
@@ -60,7 +60,7 @@ namespace MyVet.Controllers
         public IActionResult GetAllMyDates()
         {
             var user = HttpContext.User;
-            string idUser = user.Claims.FirstOrDefault(x => x.Type == TypeClaims.IdUser).Value;
+            string idUser = user.Claims.FirstOrDefault(x => x.Type == TypeClaims.IdUser)!.Value;
 
             List<DatesDto> result = _datesServices.GetAllMyDates(Convert.ToInt32(idUser));
             return Ok(result);

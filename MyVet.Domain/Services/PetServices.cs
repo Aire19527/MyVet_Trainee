@@ -17,113 +17,65 @@ namespace MyVet.Domain.Services
     {
         #region Attribute
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IRestService _restService;
-        private readonly IConfiguration _config;
         #endregion
 
         #region Builder
-        public PetServices(IUnitOfWork unitOfWork, IRestService restService, IConfiguration config)
+        public PetServices(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _restService = restService;
-            _config = config;
         }
         #endregion
 
         #region Methods
 
-        
-        public async Task<ResponseDto> GetAllMyPets(string token)
+        public List<PetDto> GetAllMyPets(int idUser)
         {
-            string urlBase = _config.GetSection("ApiMyVet").GetSection("UrlBase").Value;
-            string controller = _config.GetSection("ApiMyVet").GetSection("ControlerPet").Value;
-            string method = _config.GetSection("ApiMyVet").GetSection("MethodGetAllMyPets").Value;
+            var pets = _unitOfWork.PetRepository.FindAll(x => x.UserPetEntity.IdUser == idUser,
+                                                        p => p.UserPetEntity,
+                                                        p => p.SexEntity,
+                                                        p => p.TypePetEntity).ToList();
+
+            List<PetDto> list = pets.Select(x => new PetDto
+            {
+                DateBorns = x.DateBorns,
+                Id = x.Id,
+                Name = x.Name,
+                IdTypePet = x.IdTypePet,
+                IdSex = x.IdSex,
+                Sexo = x.SexEntity.Sex,
+                TypePet = x.TypePetEntity.TypePet,
+                Edad = CalculateAge(x.DateBorns)
+
+            }).ToList();
 
 
-            Dictionary<string, string> parameters = new Dictionary<string, string>();
-            Dictionary<string, string> headers = new Dictionary<string, string>();
-            headers.Add("Token", token);
-
-            ResponseDto response = await _restService.GetRestServiceAsync<ResponseDto>(urlBase, controller, method, parameters, headers);
-            if (response.IsSuccess)
-                response.Result = JsonConvert.DeserializeObject<List<PetDto>>(response.Result.ToString());
-
-            return response;
-            //if (response.IsSuccess)
-            //{
-            //    return JsonConvert.DeserializeObject<List<PetDto>>(response.Result.ToString());
-            //}
-
-
-            //return new List<PetDto>();
-
-
-
-            //var pets = _unitOfWork.PetRepository.FindAll(x => x.UserPetEntity.IdUser == idUser,
-            //                                            p => p.UserPetEntity,
-            //                                            p => p.SexEntity,
-            //                                            p => p.TypePetEntity).ToList();
-
-            //List<PetDto> list = pets.Select(x => new PetDto
-            //{
-            //    DateBorns = x.DateBorns,
-            //    Id = x.Id,
-            //    Name = x.Name,
-            //    IdTypePet = x.IdTypePet,
-            //    IdSex = x.IdSex,
-            //    Sexo = x.SexEntity.Sex,
-            //    TypePet = x.TypePetEntity.TypePet,
-            //    Edad = CalculateAge(x.DateBorns)
-
-            //}).ToList();
-
-
-            //return list;
+            return list;
         }
-        //public async Task<List<PetDto>> GetAllMyPets(string token)
-        //{
-        //    string urlBase = _config.GetSection("ApiMyVet").GetSection("UrlBase").Value;
-        //    string controller = _config.GetSection("ApiMyVet").GetSection("ControlerPet").Value;
-        //    string method = _config.GetSection("ApiMyVet").GetSection("MethodGetAllMyPets").Value;
+
+        public List<PetDto> GetAllPets()
+        {
+            var pets = _unitOfWork.PetRepository.GetAll(p => p.UserPetEntity,
+                                                        p => p.UserPetEntity.UserEntity,
+                                                        p => p.SexEntity,
+                                                        p => p.TypePetEntity).ToList();
+
+            List<PetDto> list = pets.Select(x => new PetDto
+            {
+                DateBorns = x.DateBorns,
+                Id = x.Id,
+                Name = x.Name,
+                NombrePropietario=x.UserPetEntity.UserEntity.FullName,
+                IdTypePet = x.IdTypePet,
+                IdSex = x.IdSex,
+                Sexo = x.SexEntity.Sex,
+                TypePet = x.TypePetEntity.TypePet,
+                Edad = CalculateAge(x.DateBorns)
+
+            }).ToList();
 
 
-        //    Dictionary<string, string> parameters = new Dictionary<string, string>();
-        //    Dictionary<string, string> headers = new Dictionary<string, string>();
-        //    headers.Add("Token", token);
-
-        //    ResponseDto response = await _restService.GetRestServiceAsync<ResponseDto>(urlBase, controller, method, parameters, headers);
-
-        //    if (response.IsSuccess)
-        //    {
-        //        return JsonConvert.DeserializeObject<List<PetDto>>(response.Result.ToString());
-        //    }
-
-
-        //    return new List<PetDto>();
-
-
-
-        //    //var pets = _unitOfWork.PetRepository.FindAll(x => x.UserPetEntity.IdUser == idUser,
-        //    //                                            p => p.UserPetEntity,
-        //    //                                            p => p.SexEntity,
-        //    //                                            p => p.TypePetEntity).ToList();
-
-        //    //List<PetDto> list = pets.Select(x => new PetDto
-        //    //{
-        //    //    DateBorns = x.DateBorns,
-        //    //    Id = x.Id,
-        //    //    Name = x.Name,
-        //    //    IdTypePet = x.IdTypePet,
-        //    //    IdSex = x.IdSex,
-        //    //    Sexo = x.SexEntity.Sex,
-        //    //    TypePet = x.TypePetEntity.TypePet,
-        //    //    Edad = CalculateAge(x.DateBorns)
-
-        //    //}).ToList();
-
-
-        //    //return list;
-        //}
+            return list;
+        }
 
         private string CalculateAge(DateTime dateBorn)
         {

@@ -10,486 +10,569 @@
 }
 
 
-@if (isAdmin || isStandar)
+
+<input type="text" id="txtIsAdmin" value="@isAdmin.ToString()" hidden />
+
+@if (isAdmin)
 {
     <h1>Listado de mascotas</h1>
-
-
-    <p>
-
-        <button class="btn btn-primary" onclick="nuevaMascota()">
-
-            <i class="fas fa-paw"></i> Nuevo Mascota
-        </button>
-    </p>
-
+    <hr />
     <div class="row">
+        <div class="col-md-12">
 
-        <table class="table">
-            <thead class="thead-dark">
-                <tr>
-                    <th scope="col">Nombre</th>
-                    <th scope="col">Edad</th>
-                    <th scope="col">Tipo</th>
-                    <th scope="col">Sexo</th>
-                    <th scope="col">Opciones</th>
-                </tr>
-            </thead>
+            <table id="tblPets" class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Propietario</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Edad</th>
+                        <th scope="col">Tipo</th>
+                        <th scope="col">Sexo</th>
+                        <th scope="col">Opciones</th>
+                    </tr>
+                </thead>
 
-            <tbody id="cuerpoPets"></tbody>
-        </table>
+                <tbody id="cuerpoPets"></tbody>
+            </table>
 
+        </div>
     </div>
+}
+else
+{
+    <div class="row">
+        <div class="col-md-6">
+            <h1>Listado de mascotas</h1>
+        </div>
 
-
-    @*modal*@
-    <div class="modal fade" id="modalPet" tabindex="1" role="dialog" aria-labelledby="modalPetLabel" aria-hidden="true">
-
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="idTituloModalPet">Crear Mascota</h5>
-                </div>
-                <div class="modal-body">
-                    <form>
-
-                        <div class="row">
-                            <div class="col-md-6 form-group">
-                                <label for="recipient-name" class="col-form-label">Nombre</label>
-                                <input type="text" class="form-control" id="txtNamePet" placeholder="Nombre mascota" required>
-                            </div>
-                            <div class="col-md-6 form-group">
-                                <label for="recipient-name" class="col-form-label">Fecha Nacimiento</label>
-                                <input type="date" class="form-control" id="txtDateBornPet" required>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6 form-group">
-                                <label class="control-label"> Sexo</label>
-                                <select id="cmbSex" class="form-control" onchange="seleccionarSexo()" required>
-                                    <option> Seleccionar</option>
-                                </select>
-                            </div>
-                            <div class="col-md-6 form-group">
-                                <label class="control-label"> Tipo Mascota</label>
-                                <select id="cmbTypePet" class="form-control" onchange="seleccionarTipoMascota()" required>
-                                    <option> Seleccionar</option>
-                                </select>
-                            </div>
-                        </div>
-
-
-
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">
-                        <i class="fas fa-window-close"></i>
-                        Cancelar
-                    </button>
-                    <button type="button" class="btn btn-success" onclick="guardarPet()">
-                        <i class="far fa-save"></i>
-                        Guardar
-                    </button>
-                </div>
-            </div>
+        <div class="col-md-6">
+            <button class=" buttonTitle btn btn-primary" onclick="nuevaMascota()">
+                <i class="fas fa-paw"></i> Nuevo Mascota
+            </button>
         </div>
     </div>
 
-    @section Scripts{
-  @{
+    <hr />
+
+
+    <div class="row">
+        <div class="col-md-12">
+            <table id="tblPets" class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Edad</th>
+                        <th scope="col">Tipo</th>
+                        <th scope="col">Sexo</th>
+                        <th scope="col">Opciones</th>
+                    </tr>
+                </thead>
+
+                <tbody id="cuerpoPets"></tbody>
+            </table>
+
+        </div>
+    </div>
+}
+
+
+
+
+@*modal*@
+<div class="modal fade" id="modalPet" tabindex="1" role="dialog" aria-labelledby="modalPetLabel" aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="idTituloModalPet">Crear Mascota</h5>
+            </div>
+            <div class="modal-body">
+                <form>
+
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label for="recipient-name" class="col-form-label">Nombre</label>
+                            <input type="text" class="form-control" id="txtNamePet" placeholder="Nombre mascota" required>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label for="recipient-name" class="col-form-label">Fecha Nacimiento</label>
+                            <input type="date" class="form-control" id="txtDateBornPet" required>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label class="control-label"> Sexo</label>
+                            <select id="cmbSex" class="form-control" onchange="seleccionarSexo()" required>
+                                <option> Seleccionar</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label class="control-label"> Tipo Mascota</label>
+                            <select id="cmbTypePet" class="form-control" onchange="seleccionarTipoMascota()" required>
+                                <option> Seleccionar</option>
+                            </select>
+                        </div>
+                    </div>
+
+
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">
+                    <i class="fas fa-window-close"></i>
+                    Cancelar
+                </button>
+                <button type="button" class="btn btn-success" onclick="guardarPet()">
+                    <i class="far fa-save"></i>
+                    Guardar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 
-<script type="text/javascript" charset="utf-8">
+    <script type="text/javascript" charset="utf-8">
 
-    //var listaPets= JSON.parse('@Json.Serialize(@Model)');
-    var listaPets= [];
-    var listSexs=[];
-    var listTypePets=[];
+        //var listaPets= JSON.parse('@Json.Serialize(@Model)');
+        var listaPets = [];
+        var listSexs = [];
+        var listTypePets = [];
 
-    let idSex='';
-    let idTypePet='';
-    let idPet='';
+        let idSex = '';
+        let idTypePet = '';
+        let idPet = '';
+        let isAdmin = false;
 
-    $(document).ready(function () {
-       getAllMyPets();
-       getSexs();
-       getTypePets();
-    });
+        $(document).ready(function () {
 
-    function getAllMyPets()
-    {
-        modalProcesando(true);
-        $.ajax({
-            url: '@Url.Action("GetAllMyPets", "Pet")',
-            method: 'GET',
-            dataType: "json",
-            success: function (data) {
-                modalProcesando(false);
-                console.log(data);
-                if(data.isSuccess)
-                {
-                    listaPets=data.result;
-                    cargarGridPets(listaPets);
-                    console.log(listaPets);
-                }else{
-                    Swal.fire(
-                                'Opps!',
-                                data.message,
-                                'error');
-                }
+            isAdmin = $('#txtIsAdmin').val() == "True";
+            console.log('Es Administrador: ' + isAdmin);
 
-                
+            if (isAdmin) {
+                getAllPets();
+            } else {
+                getAllMyPets();
+            }
 
-               
-            },
-            error: function (xhr, textStatus, errorThrown) {
+            getSexs();
+            getTypePets();
+        });
+
+
+        function getAllPets() {
+            modalProcesando(true);
+            $.ajax({
+                url: '@Url.Action("GetAllPets", "Pet")',
+                method: 'GET',
+                dataType: "json",
+                success: function (data) {
+                    modalProcesando(false);
+                    listaPets = data;
+                    loadGrid(listaPets);
+                },
+                error: function (xhr, textStatus, errorThrown) {
                     modalProcesando(false);
                     console.error(xhr, textStatus, errorThrown);
                 }
-         });
-    }
-
-    function cargarGridPets(data){
-        $("#cuerpoPets").html("");
-
-        for(var i=0; i<data.length; i++){
-            var tr=`
-             <tr>
-                <th>`+ data[i].name+ `</th>
-                <th> `+ data[i].edad +`</th>
-                <th> `+ data[i].typePet +`</th>
-                <th> `+ data[i].sexo + `</th>
-                <td>
-                <button  class="btn btn-warning" onclick="editarPet(`+ data[i].id +`)"><i class="fas fa-edit"></i> Editar</button>
-                <button class="btn btn-danger" onclick="eliminarPet(`+ data[i].id +`)"><i class="far fa-trash-alt"></i> Eliminar</button>
-                </td>
-            </tr>
-            `;
-            $("#cuerpoPets").append(tr);
+            });
         }
-    }
+
+        function getAllMyPets() {
+            modalProcesando(true);
+            $.ajax({
+                url: '@Url.Action("GetAllMyPets", "Pet")',
+                method: 'GET',
+                dataType: "json",
+                success: function (data) {
+                    modalProcesando(false);
+                    console.log(data);
+                    listaPets = data;
+                    loadGrid(listaPets);
+                    console.log(listaPets);
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    modalProcesando(false);
+                    console.error(xhr, textStatus, errorThrown);
+                }
+            });
+        }
+
+        function loadGrid(data) {
+            //llenar registro
+            if ($.fn.dataTable.isDataTable('#tblPets')) {
+                var table = $('#tblPets').DataTable();
+                table.destroy();
+                cargarGridPets(data);
+                loadGridDataTable('tblPets');
+            }
+            else {
+                cargarGridPets(data);
+                loadGridDataTable('tblPets');
+            }
+        }
+
+        function cargarGridPets(data) {
+            $("#cuerpoPets").html("");
+
+            if (isAdmin) {
+                for (var i = 0; i < data.length; i++) {
+                    var tr = `
+                                                                        <tr>
+                                                                            <th>`+ data[i].nombrePropietario + `</th>
+                                                                            <th>`+ data[i].name + `</th>
+                                                                            <th> `+ data[i].edad + `</th>
+                                                                            <th> `+ data[i].typePet + `</th>
+                                                                            <th> `+ data[i].sexo + `</th>
+                                                                            <td>
+                                                                            <button  class="btn btn-warning" onclick="editarPet(`+ data[i].id + `)"><i class="fas fa-edit"></i> Editar</button>
+                                                                            <button class="btn btn-danger" onclick="eliminarPet(`+ data[i].id + `)"><i class="far fa-trash-alt"></i> Eliminar</button>
+                                                                            </td>
+                                                                        </tr>
+                                                                        `;
+                    $("#cuerpoPets").append(tr);
+                }
+            } else {
+                for (var i = 0; i < data.length; i++) {
+                    var tr = `
+                                                                        <tr>
+                                                                            <th>`+ data[i].name + `</th>
+                                                                            <th> `+ data[i].edad + `</th>
+                                                                            <th> `+ data[i].typePet + `</th>
+                                                                            <th> `+ data[i].sexo + `</th>
+                                                                            <td>
+                                                                            <button  class="btn btn-warning" onclick="editarPet(`+ data[i].id + `)"><i class="fas fa-edit"></i> Editar</button>
+                                                                            <button class="btn btn-danger" onclick="eliminarPet(`+ data[i].id + `)"><i class="far fa-trash-alt"></i> Eliminar</button>
+                                                                            </td>
+                                                                        </tr>
+                                                                        `;
+                    $("#cuerpoPets").append(tr);
+                }
+            }
 
 
-    function eliminarPet(idPet)
-    {
-        console.log("mandó a eliminar", idPet);
-        Swal.fire({
-            title: '¿Confirmar Eliminacion?',
-            text: "No podrás revertir esto.!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            cancelButtonText: 'Cancelar',
-            confirmButtonText: 'Si, Eliminar!',
-        }).then((result) => {
-            if (result.isConfirmed) {
+        }
 
-                modalProcesando(true);
-                //petición
-                $.ajax({
-                    url: '@Url.Action("DeletePet", "Pet")',
-                    method: 'DELETE',
-                    data:{
-                        idPet:idPet
-                    },
-                    dataType: "json",
-                    success: function (data) {
-                        modalProcesando(false);
-                        console.log(data);
-                        if (data.isSuccess){
+        function eliminarPet(idPet) {
+            console.log("mandó a eliminar", idPet);
+            Swal.fire({
+                title: '¿Confirmar Eliminacion?',
+                text: "No podrás revertir esto.!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                cancelButtonText: 'Cancelar',
+                confirmButtonText: 'Si, Eliminar!',
+            }).then((result) => {
+                if (result.isConfirmed) {
 
-                            listaPets=listaPets.filter(x=>x.id!=idPet);
-                            cargarGridPets(listaPets);
+                    modalProcesando(true);
+                    //petición
+                    $.ajax({
+                        url: '@Url.Action("DeletePet", "Pet")',
+                        method: 'DELETE',
+                        data: {
+                            idPet: idPet
+                        },
+                        dataType: "json",
+                        success: function (data) {
+                            modalProcesando(false);
+                            console.log(data);
+                            if (data.isSuccess) {
 
-                            Swal.fire(
-                                'Eliminado!',
-                                data.message,
-                                'success');
-                        }else{
-                            Swal.fire(
-                                'Error!',
-                                data.message,
-                                'error');
+                                listaPets = listaPets.filter(x => x.id != idPet);
+                                cargarGridPets(listaPets);
+
+                                Swal.fire(
+                                    'Eliminado!',
+                                    data.message,
+                                    'success');
+                            } else {
+                                Swal.fire(
+                                    'Error!',
+                                    data.message,
+                                    'error');
+                            }
+                        },
+                        error: function (xhr, textStatus, errorThrown) {
+                            modalProcesando(false);
+                            console.error(xhr, textStatus, errorThrown);
                         }
-                     },
-                     error: function (xhr, textStatus, errorThrown) {
-                         modalProcesando(false);
-                         console.error(xhr, textStatus, errorThrown);
-                     }
-                  });
+                    });
                 }
 
             });
         }
 
 
-    function nuevaMascota(){
+        function nuevaMascota() {
+            limpiarForm();
+            if (listSexs.length == 0) {
+                getSexs();
+            }
 
-       if(listSexs.length==0){
-            getSexs();
+            if (listTypePets.length == 0) {
+                getTypePets();
+            }
+
+            $('#idTituloModalPet').html("Crear Mascota");
+            $('#modalPet').modal({ keyboard: true });
+
         }
 
-        if(listTypePets.length==0){
-            getTypePets();
-        }
-
-       $('#idTituloModalPet').html("Crear Mascota");
-       $('#modalPet').modal({keyboard:true});
-
-    }
-
-    function getSexs()
-    {
-        modalProcesando(true);
-        $.ajax({
-            url: '@Url.Action("GetAllSexs", "Pet")',
-            method: 'GET',
-            dataType: "json",
-            success: function (data) {
-                modalProcesando(false);
-                listSexs=data;
-                console.log(listSexs);
-                cargarSexs(listSexs);
-            },
-            error: function (xhr, textStatus, errorThrown) {
+        function getSexs() {
+            modalProcesando(true);
+            $.ajax({
+                url: '@Url.Action("GetAllSexs", "Pet")',
+                method: 'GET',
+                dataType: "json",
+                success: function (data) {
+                    modalProcesando(false);
+                    listSexs = data;
+                    console.log(listSexs);
+                    cargarSexs(listSexs);
+                },
+                error: function (xhr, textStatus, errorThrown) {
                     modalProcesando(false);
                     console.error(xhr, textStatus, errorThrown);
                 }
-         });
-    }
+            });
+        }
 
-    function getTypePets()
-    {
-        modalProcesando(true);
-        $.ajax({
-            url: '@Url.Action("GetAllTypePet", "Pet")',
-            method: 'GET',
-            dataType: "json",
-            success: function (data) {
-                modalProcesando(false);
-                listTypePets=data;
-                cargarTypePets(listTypePets);
-            },
-            error: function (xhr, textStatus, errorThrown) {
+        function getTypePets() {
+            modalProcesando(true);
+            $.ajax({
+                url: '@Url.Action("GetAllTypePet", "Pet")',
+                method: 'GET',
+                dataType: "json",
+                success: function (data) {
+                    modalProcesando(false);
+                    listTypePets = data;
+                    cargarTypePets(listTypePets);
+                    console.log(listTypePets);
+                },
+                error: function (xhr, textStatus, errorThrown) {
                     modalProcesando(false);
                     console.error(xhr, textStatus, errorThrown);
                 }
-         });
-    }
+            });
+        }
 
-    function cargarSexs(data, selected) {
-        $("#cmbSex").empty();
-        $("#cmbSex").append('<option value="" disabled selected>Seleccione un sexo</option>');
-        $.each(data, function (i, lista) {
-            if (data[i].idSex == selected) {
-                $("#cmbSex").append('<option value="' + data[i].idSex + '"selected>' + data[i].sex + '</option>');
-            }
-            else {
-                $("#cmbSex").append('<option value="' + data[i].idSex + '">' + data[i].sex + '</option>');
-            }
-        });
-    }
+        function cargarSexs(data, selected) {
+            $("#cmbSex").empty();
+            $("#cmbSex").append('<option value="" disabled selected>Seleccione un sexo</option>');
+            $.each(data, function (i, lista) {
+                if (data[i].idSex == selected) {
+                    $("#cmbSex").append('<option value="' + data[i].idSex + '"selected>' + data[i].sex + '</option>');
+                }
+                else {
+                    $("#cmbSex").append('<option value="' + data[i].idSex + '">' + data[i].sex + '</option>');
+                }
+            });
+        }
 
-    function cargarTypePets(data, selected) {
-        $("#cmbTypePet").empty();
-        $("#cmbTypePet").append('<option value="" disabled selected>Seleccione un Tipo Mascota</option>');
-        $.each(data, function (i, lista) {
-            if (data[i].idTypePet == selected) {
-                $("#cmbTypePet").append('<option value="' + data[i].idTypePet + '"selected>' + data[i].typePet + '</option>');
-            }
-            else {
-                $("#cmbTypePet").append('<option value="' + data[i].idTypePet + '">' + data[i].typePet + '</option>');
-            }
-        });
-    }
+        function cargarTypePets(data, selected) {
+            $("#cmbTypePet").empty();
+            $("#cmbTypePet").append('<option value="" disabled selected>Seleccione un Tipo Mascota</option>');
+            $.each(data, function (i, lista) {
+                if (data[i].idTypePet == selected) {
+                    $("#cmbTypePet").append('<option value="' + data[i].idTypePet + '"selected>' + data[i].typePet + '</option>');
+                }
+                else {
+                    $("#cmbTypePet").append('<option value="' + data[i].idTypePet + '">' + data[i].typePet + '</option>');
+                }
+            });
+        }
 
-    function guardarPet(){
+        function guardarPet() {
 
-        if(validarForm())
-        {
-            let parametro={
-                DateBorns:$("#txtDateBornPet").val(),
-                Name:$("#txtNamePet").val(),
-                IdSex:idSex,
-                IdTypePet:idTypePet,
-            };
-
-
-            if(idPet=='')
-            {
-                modalProcesando(true);
-                $.ajax({
-                    url: '@Url.Action("InsertPet", "Pet")',
-                    method: 'POST',
-                    data:parametro,
-                    dataType: "json",
-                    success: function (data) {
-                        modalProcesando(false);
-
-                        console.log(listaPets);
-
-                        if (data){
-                            $('#modalPet').modal('hide');
-                            limpiarForm();
-                            toastMessage('success','Mascota guardada exitosamente!');
-                            getAllMyPets();
-                        }else{
-                             toastMessage('error','Hubo un error al guardar, por favor intentarlo nuevamente!');
-                        }
+            if (validarForm()) {
+                let parametro = {
+                    DateBorns: $("#txtDateBornPet").val(),
+                    Name: $("#txtNamePet").val(),
+                    IdSex: idSex,
+                    IdTypePet: idTypePet,
+                };
 
 
-                    },
-                    error: function (xhr, textStatus, errorThrown) {
+                if (idPet == '') {
+                    modalProcesando(true);
+                    $.ajax({
+                        url: '@Url.Action("InsertPet", "Pet")',
+                        method: 'POST',
+                        data: parametro,
+                        dataType: "json",
+                        success: function (data) {
                             modalProcesando(false);
-                            toastMessage('error','Hubo un error al guardar, por favor intentarlo nuevamente!');
+
+                            console.log(listaPets);
+
+                            if (data) {
+                                $('#modalPet').modal('hide');
+                                limpiarForm();
+                                toastMessage('success', 'Mascota guardada exitosamente!');
+                                getAllMyPets();
+                            } else {
+                                toastMessage('error', 'Hubo un error al guardar, por favor intentarlo nuevamente!');
+                            }
+
+
+                        },
+                        error: function (xhr, textStatus, errorThrown) {
+                            modalProcesando(false);
+                            toastMessage('error', 'Hubo un error al guardar, por favor intentarlo nuevamente!');
                             console.error(xhr, textStatus, errorThrown);
                         }
-                 });
-            }else{
-                parametro.Id=idPet;
+                    });
+                } else {
+                    parametro.Id = idPet;
 
-                modalProcesando(true);
-                $.ajax({
-                    url: '@Url.Action("UpdatePet", "Pet")',
-                    method: 'PUT',
-                    data:parametro,
-                    dataType: "json",
-                    success: function (data) {
-                        modalProcesando(false);
-
-                        console.log(listaPets);
-
-                        if (data){
-                            $('#modalPet').modal('hide');
-                            limpiarForm();
-                            toastMessage('success','Mascota guardada exitosamente!');
-                            getAllMyPets();
-                        }else{
-                             toastMessage('error','Hubo un error al guardar, por favor intentarlo nuevamente!');
-                        }
-
-
-                    },
-                    error: function (xhr, textStatus, errorThrown) {
+                    modalProcesando(true);
+                    $.ajax({
+                        url: '@Url.Action("UpdatePet", "Pet")',
+                        method: 'PUT',
+                        data: parametro,
+                        dataType: "json",
+                        success: function (data) {
                             modalProcesando(false);
-                            toastMessage('error','Hubo un error al guardar, por favor intentarlo nuevamente!');
+
+                            console.log(listaPets);
+
+                            if (data) {
+                                $('#modalPet').modal('hide');
+                                limpiarForm();
+                                toastMessage('success', 'Mascota guardada exitosamente!');
+                                getAllMyPets();
+                            } else {
+                                toastMessage('error', 'Hubo un error al guardar, por favor intentarlo nuevamente!');
+                            }
+
+
+                        },
+                        error: function (xhr, textStatus, errorThrown) {
+                            modalProcesando(false);
+                            toastMessage('error', 'Hubo un error al guardar, por favor intentarlo nuevamente!');
                             console.error(xhr, textStatus, errorThrown);
                         }
-                 });
+                    });
+                }
             }
         }
-    }
 
-    function validarForm()
-    {
-        if($("#txtNamePet").val()=='')
-        {
+        function validarForm() {
+            if ($("#txtNamePet").val() == '') {
                 $("#txtNamePet").focus();
-                toastMessage('warning','El nombre es obligatorio.');
+                toastMessage('warning', 'El nombre es obligatorio.');
                 return false;
-        }
+            }
 
-        if($("#txtDateBornPet").val()=='')
-        {
+            if ($("#txtDateBornPet").val() == '') {
                 $("#txtDateBornPet").focus();
-                toastMessage('warning','La fecha de nacimeinto es obligatoria.');
+                toastMessage('warning', 'La fecha de nacimeinto es obligatoria.');
                 return false;
-        }
+            }
 
-        if(idSex=='')
-        {
+            if (idSex == '') {
                 $("#cmbSex").focus();
-                toastMessage('warning','El sexo es obligatorio.');
+                toastMessage('warning', 'El sexo es obligatorio.');
                 return false;
-        }
+            }
 
-        if(idTypePet=='')
-        {
+            if (idTypePet == '') {
                 $("#cmbTypePet").focus();
-                toastMessage('warning','El tipo mascota es obligatorio.');
+                toastMessage('warning', 'El tipo mascota es obligatorio.');
                 return false;
+            }
+
+
+
+            return true;
+        }
+
+        function limpiarForm() {
+            $("#txtNamePet").val('');
+            $("#txtDateBornPet").val('');
+            idSex = '';
+            idTypePet = '';
+            idPet = '';
+
+            cargarSexs(listSexs);
+            cargarTypePets(listTypePets);
+        }
+
+        function seleccionarSexo() {
+            var combo = document.getElementById("cmbSex");
+            let selected = combo.options[combo.selectedIndex].value;
+            //let text = combo.options[combo.selectedIndex].text;
+            idSex = selected;
+        }
+
+        function seleccionarTipoMascota() {
+            var combo = document.getElementById("cmbTypePet");
+            let selected = combo.options[combo.selectedIndex].value;
+            //let text = combo.options[combo.selectedIndex].text;
+            idTypePet = selected;
+        }
+
+
+        function editarPet(id) {
+            limpiarForm();
+
+            idPet = id;
+            let pet = listaPets.find(x => x.id == idPet);
+
+            idTypePet = pet.idTypePet;
+            idSex = pet.idSex;
+
+            $('#txtNamePet').val(pet.name);
+
+            //setear fechas
+            var now = new Date(pet.dateBorns);
+            var day = ("0" + now.getDate()).slice(-2);
+            var month = ("0" + (now.getMonth() + 1)).slice(-2);
+            var today = now.getFullYear() + "-" + (month) + "-" + (day);
+
+            $('#txtDateBornPet').val(today)
+
+
+            cargarSexs(listSexs, pet.idSex);
+            cargarTypePets(listTypePets, pet.idTypePet);
+
+            $('#idTituloModalPet').html("Editar Mascota");
+            $('#modalPet').modal({ keyboard: true });
         }
 
 
 
-        return true;
-    }
-
-    function limpiarForm()
-    {
-       $("#txtNamePet").val('');
-       $("#txtDateBornPet").val('');
-       idSex='';
-       idTypePet='';
-       idPet='';
-
-       cargarSexs(listSexs);
-       cargarTypePets(listTypePets);
-    }
-
-    function seleccionarSexo()
-    {
-        var combo=document.getElementById("cmbSex");
-        let selected = combo.options[combo.selectedIndex].value;
-        //let text = combo.options[combo.selectedIndex].text;
-        idSex=selected;
-    }
-
-    function seleccionarTipoMascota()
-    {
-        var combo=document.getElementById("cmbTypePet");
-        let selected = combo.options[combo.selectedIndex].value;
-        //let text = combo.options[combo.selectedIndex].text;
-        idTypePet=selected;
-    }
-
-
-    function editarPet(id)
-    {
-        idPet=id;
-        let pet= listaPets.find(x=>x.id==idPet);
-
-        idTypePet=pet.idTypePet;
-        idSex=pet.idSex;
-
-        $('#txtNamePet').val(pet.name);
-
-        //setear fechas
-        var now = new Date(pet.dateBorns);
-        var day = ("0" + now.getDate()).slice(-2);
-        var month = ("0" + (now.getMonth() + 1)).slice(-2);
-        var today = now.getFullYear()+"-"+(month)+"-"+(day);
-
-        $('#txtDateBornPet').val(today)
-
-
-        cargarSexs(listSexs,pet.idSex);
-        cargarTypePets(listTypePets,pet.idTypePet);
-
-       $('#idTituloModalPet').html("Editar Mascota");
-       $('#modalPet').modal({keyboard:true});
-    }
-
-
-
-</script>
+    </script>
 }
+
+
+
+
+
+@if (isAdmin || isStandar)
+{
+
 
 }
 else
 {
     @section Scripts{
-<script type="text/javascript" charset="utf-8">
-    $(document).ready(function () {
-          Swal.fire(
-                       '¡Usuario no Autorizado!',
-                       'No tiene suficientes privilegios para ver esta sección.',
-                       'error');
-    });
-</script>
+    <script type="text/javascript" charset="utf-8">
+        $(document).ready(function () {
+            Swal.fire(
+                '¡Usuario no Autorizado!',
+                'No tiene suficientes privilegios para ver esta sección.',
+                'error');
+        });
+    </script>
      }
 }
