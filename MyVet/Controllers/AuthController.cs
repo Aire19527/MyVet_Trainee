@@ -1,13 +1,10 @@
-﻿using Common.Utils.Helpers;
-using Infraestructure.Entity.Model;
+﻿using Infraestructure.Entity.Model;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using MyVet.Domain.Dto;
-using MyVet.Domain.Dto.RestServoces;
 using MyVet.Domain.Services.Interface;
 using MyVet.Handlers;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,7 +34,7 @@ namespace MyVet.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(UserDto user)
         {
-            ResponseDto response =  _userServices.Login(user);
+            ResponseDto response = _userServices.Login(user);
 
             if (!response.IsSuccess)
             {
@@ -59,17 +56,6 @@ namespace MyVet.Controllers
                     new Claim(TypeClaims.IdRol, string.Join(",",userEntity.RolUserEntities.Select(x=>x.IdRol))),
                 };
 
-
-                //TokenDto token = JsonConvert.DeserializeObject<TokenDto>(response.Result.ToString());
-                //string idRoles = Utils.GetClaimValue(token.Token, TypeClaims.IdRol);
-                //string idUser = Utils.GetClaimValue(token.Token, TypeClaims.IdUser);
-                //var claims = new List<Claim>
-                //{
-                //    new Claim(ClaimTypes.Name, userEntity.FullName),
-                //    new Claim(TypeClaims.IdUser, userEntity.IdUser.ToString()),
-                //    new Claim(TypeClaims.UserName, userEntity.Email),
-                //    new Claim(TypeClaims.IdRol, string.Join(",",userEntity.RolUserEntities.Select(x=>x.IdRol))),
-                //};
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
                 var authProperties = new AuthenticationProperties
