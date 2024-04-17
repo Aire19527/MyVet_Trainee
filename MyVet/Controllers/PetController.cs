@@ -40,11 +40,9 @@ namespace MyVet.Controllers
         public async Task<IActionResult> GetAllMyPets()
         {
             var user = HttpContext.User;
-            string token = user.Claims.FirstOrDefault(x => x.Type == TypeClaims.Token).Value;
-
-            //List<PetDto> list =await _petServices.GetAllMyPets(token);
-            ResponseDto response =await _petServices.GetAllMyPets(token);
-            return Ok(response);
+            string idUser = user.Claims.FirstOrDefault(x => x.Type == TypeClaims.IdUser).Value;
+            List<PetDto> list =await _petServices.GetAllMyPets(Convert.ToInt32(idUser));
+            return Ok(list);
         }
 
         [HttpDelete]

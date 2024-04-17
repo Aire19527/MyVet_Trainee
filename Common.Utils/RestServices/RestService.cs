@@ -1,13 +1,12 @@
 ﻿using Common.Utils.RestServices.Interface;
-using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Common.Utils.RestServices
@@ -100,9 +99,9 @@ namespace Common.Utils.RestServices
                 //    return JsonConvert.DeserializeObject<T>(data);
                 //}
 
-                
 
-                
+
+
             }
         }
 

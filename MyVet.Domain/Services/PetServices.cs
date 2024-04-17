@@ -33,22 +33,22 @@ namespace MyVet.Domain.Services
         #region Methods
 
         
-        public async Task<ResponseDto> GetAllMyPets(string token)
+        public async Task<List<PetDto>> GetAllMyPets(int idUser)
         {
-            string urlBase = _config.GetSection("ApiMyVet").GetSection("UrlBase").Value;
-            string controller = _config.GetSection("ApiMyVet").GetSection("ControlerPet").Value;
-            string method = _config.GetSection("ApiMyVet").GetSection("MethodGetAllMyPets").Value;
+            //string urlBase = _config.GetSection("ApiMyVet").GetSection("UrlBase").Value;
+            //string controller = _config.GetSection("ApiMyVet").GetSection("ControlerPet").Value;
+            //string method = _config.GetSection("ApiMyVet").GetSection("MethodGetAllMyPets").Value;
 
 
-            Dictionary<string, string> parameters = new Dictionary<string, string>();
-            Dictionary<string, string> headers = new Dictionary<string, string>();
-            headers.Add("Token", token);
+            //Dictionary<string, string> parameters = new Dictionary<string, string>();
+            //Dictionary<string, string> headers = new Dictionary<string, string>();
+            //headers.Add("Token", token);
 
-            ResponseDto response = await _restService.GetRestServiceAsync<ResponseDto>(urlBase, controller, method, parameters, headers);
-            if (response.IsSuccess)
-                response.Result = JsonConvert.DeserializeObject<List<PetDto>>(response.Result.ToString());
+            //ResponseDto response = await _restService.GetRestServiceAsync<ResponseDto>(urlBase, controller, method, parameters, headers);
+            //if (response.IsSuccess)
+            //    response.Result = JsonConvert.DeserializeObject<List<PetDto>>(response.Result.ToString());
 
-            return response;
+            //return response;
             //if (response.IsSuccess)
             //{
             //    return JsonConvert.DeserializeObject<List<PetDto>>(response.Result.ToString());
@@ -59,26 +59,26 @@ namespace MyVet.Domain.Services
 
 
 
-            //var pets = _unitOfWork.PetRepository.FindAll(x => x.UserPetEntity.IdUser == idUser,
-            //                                            p => p.UserPetEntity,
-            //                                            p => p.SexEntity,
-            //                                            p => p.TypePetEntity).ToList();
+            var pets = _unitOfWork.PetRepository.FindAll(x => x.UserPetEntity.IdUser == idUser,
+                                                        p => p.UserPetEntity,
+                                                        p => p.SexEntity,
+                                                        p => p.TypePetEntity).ToList();
 
-            //List<PetDto> list = pets.Select(x => new PetDto
-            //{
-            //    DateBorns = x.DateBorns,
-            //    Id = x.Id,
-            //    Name = x.Name,
-            //    IdTypePet = x.IdTypePet,
-            //    IdSex = x.IdSex,
-            //    Sexo = x.SexEntity.Sex,
-            //    TypePet = x.TypePetEntity.TypePet,
-            //    Edad = CalculateAge(x.DateBorns)
+            List<PetDto> list = pets.Select(x => new PetDto
+            {
+                DateBorns = x.DateBorns,
+                Id = x.Id,
+                Name = x.Name,
+                IdTypePet = x.IdTypePet,
+                IdSex = x.IdSex,
+                Sexo = x.SexEntity.Sex,
+                TypePet = x.TypePetEntity.TypePet,
+                Edad = CalculateAge(x.DateBorns)
 
-            //}).ToList();
+            }).ToList();
 
 
-            //return list;
+            return list;
         }
         //public async Task<List<PetDto>> GetAllMyPets(string token)
         //{
