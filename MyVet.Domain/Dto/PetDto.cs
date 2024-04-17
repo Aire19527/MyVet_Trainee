@@ -32,5 +32,7 @@ namespace MyVet.Domain.Dto
         public string Sexo { get; set; }
         public string TypePet { get; set; }
         public int IdUser { get; set; }
+
+        public string NombrePropietario { get; set; }
     }
 }

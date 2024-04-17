@@ -8,7 +8,7 @@ namespace MyVet.Domain.Services.Interface
     public interface IUserServices
     {
         #region Auth
-        Task<ResponseDto> Login(UserDto user);
+        ResponseDto Login(UserDto user);
         Task<ResponseDto> Register(UserDto data);
         #endregion
 

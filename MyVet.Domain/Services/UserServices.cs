@@ -19,22 +19,18 @@ namespace MyVet.Domain.Services
     {
         #region Attribute
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IRestService _restService;
-        private readonly IConfiguration _config;
         #endregion
 
         #region Builder
-        public UserServices(IUnitOfWork unitOfWork, IRestService restService, IConfiguration config)
+        public UserServices(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _restService = restService;
-            _config = config;
         }
         #endregion
 
         #region authentication
 
-        public async Task<ResponseDto> Login(UserDto user)
+        public ResponseDto Login(UserDto user)
         {
             ResponseDto response = new ResponseDto();
             UserEntity result = _unitOfWork.UserRepository.FirstOrDefault(x => x.Email == user.UserName

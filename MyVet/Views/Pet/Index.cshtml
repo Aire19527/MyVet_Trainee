@@ -10,92 +10,128 @@
 }
 
 
-@if (isAdmin || isStandar)
+
+<input type="text" id="txtIsAdmin" value="@isAdmin.ToString()" hidden />
+
+@if (isAdmin)
 {
     <h1>Listado de mascotas</h1>
-
-
-    <p>
-
-        <button class="btn btn-primary" onclick="nuevaMascota()">
-
-            <i class="fas fa-paw"></i> Nuevo Mascota
-        </button>
-    </p>
-
+    <hr />
     <div class="row">
+        <div class="col-md-12">
 
-        <table class="table">
-            <thead class="thead-dark">
-                <tr>
-                    <th scope="col">Nombre</th>
-                    <th scope="col">Edad</th>
-                    <th scope="col">Tipo</th>
-                    <th scope="col">Sexo</th>
-                    <th scope="col">Opciones</th>
-                </tr>
-            </thead>
+            <table id="tblPets" class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Propietario</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Edad</th>
+                        <th scope="col">Tipo</th>
+                        <th scope="col">Sexo</th>
+                        <th scope="col">Opciones</th>
+                    </tr>
+                </thead>
 
-            <tbody id="cuerpoPets"></tbody>
-        </table>
+                <tbody id="cuerpoPets"></tbody>
+            </table>
 
+        </div>
+    </div>
+}
+else
+{
+    <div class="row">
+        <div class="col-md-6">
+            <h1>Listado de mascotas</h1>
+        </div>
+
+        <div class="col-md-6">
+            <button class=" buttonTitle btn btn-primary" onclick="nuevaMascota()">
+                <i class="fas fa-paw"></i> Nuevo Mascota
+            </button>
+        </div>
     </div>
 
+    <hr />
 
-    @*modal*@
-    <div class="modal fade" id="modalPet" tabindex="1" role="dialog" aria-labelledby="modalPetLabel" aria-hidden="true">
 
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="idTituloModalPet">Crear Mascota</h5>
-                </div>
-                <div class="modal-body">
-                    <form>
+    <div class="row">
+        <div class="col-md-12">
+            <table id="tblPets" class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Edad</th>
+                        <th scope="col">Tipo</th>
+                        <th scope="col">Sexo</th>
+                        <th scope="col">Opciones</th>
+                    </tr>
+                </thead>
 
-                        <div class="row">
-                            <div class="col-md-6 form-group">
-                                <label for="recipient-name" class="col-form-label">Nombre</label>
-                                <input type="text" class="form-control" id="txtNamePet" placeholder="Nombre mascota" required>
-                            </div>
-                            <div class="col-md-6 form-group">
-                                <label for="recipient-name" class="col-form-label">Fecha Nacimiento</label>
-                                <input type="date" class="form-control" id="txtDateBornPet" required>
-                            </div>
+                <tbody id="cuerpoPets"></tbody>
+            </table>
+
+        </div>
+    </div>
+}
+
+
+
+
+@*modal*@
+<div class="modal fade" id="modalPet" tabindex="1" role="dialog" aria-labelledby="modalPetLabel" aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="idTituloModalPet">Crear Mascota</h5>
+            </div>
+            <div class="modal-body">
+                <form>
+
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label for="recipient-name" class="col-form-label">Nombre</label>
+                            <input type="text" class="form-control" id="txtNamePet" placeholder="Nombre mascota" required>
                         </div>
-
-                        <div class="row">
-                            <div class="col-md-6 form-group">
-                                <label class="control-label"> Sexo</label>
-                                <select id="cmbSex" class="form-control" onchange="seleccionarSexo()" required>
-                                    <option> Seleccionar</option>
-                                </select>
-                            </div>
-                            <div class="col-md-6 form-group">
-                                <label class="control-label"> Tipo Mascota</label>
-                                <select id="cmbTypePet" class="form-control" onchange="seleccionarTipoMascota()" required>
-                                    <option> Seleccionar</option>
-                                </select>
-                            </div>
+                        <div class="col-md-6 form-group">
+                            <label for="recipient-name" class="col-form-label">Fecha Nacimiento</label>
+                            <input type="date" class="form-control" id="txtDateBornPet" required>
                         </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label class="control-label"> Sexo</label>
+                            <select id="cmbSex" class="form-control" onchange="seleccionarSexo()" required>
+                                <option> Seleccionar</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label class="control-label"> Tipo Mascota</label>
+                            <select id="cmbTypePet" class="form-control" onchange="seleccionarTipoMascota()" required>
+                                <option> Seleccionar</option>
+                            </select>
+                        </div>
+                    </div>
 
 
 
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">
-                        <i class="fas fa-window-close"></i>
-                        Cancelar
-                    </button>
-                    <button type="button" class="btn btn-success" onclick="guardarPet()">
-                        <i class="far fa-save"></i>
-                        Guardar
-                    </button>
-                </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">
+                    <i class="fas fa-window-close"></i>
+                    Cancelar
+                </button>
+                <button type="button" class="btn btn-success" onclick="guardarPet()">
+                    <i class="far fa-save"></i>
+                    Guardar
+                </button>
             </div>
         </div>
     </div>
+</div>
 
     @section Scripts {
     @{
@@ -436,6 +472,9 @@
             }
 
 
+        function editarPet(id) {
+            limpiarForm();
+
             function editarPet(id) {
                 idPet = id;
                 let pet = listaPets.find(x => x.id == idPet);
@@ -465,6 +504,14 @@
 
         </script>
     }
+
+
+
+
+
+@if (isAdmin || isStandar)
+{
+
 
 }
 else

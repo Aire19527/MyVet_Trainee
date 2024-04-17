@@ -37,13 +37,23 @@ namespace MyVet.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllMyPets()
+        public IActionResult GetAllMyPets()
         {
             var user = HttpContext.User;
-            string idUser = user.Claims.FirstOrDefault(x => x.Type == TypeClaims.IdUser).Value;
-            List<PetDto> list =await _petServices.GetAllMyPets(Convert.ToInt32(idUser));
+            string idUser = user.Claims.FirstOrDefault(x => x.Type == TypeClaims.IdUser)!.Value;
+            List<PetDto> list = _petServices.GetAllMyPets(Convert.ToInt32(idUser));
+
             return Ok(list);
         }
+
+        [HttpGet]
+        public IActionResult GetAllPets()
+        {
+            List<PetDto> list = _petServices.GetAllPets();
+
+            return Ok(list);
+        }
+
 
         [HttpDelete]
         public async Task<IActionResult> DeletePet(int idPet)
