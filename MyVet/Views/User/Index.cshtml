@@ -5,12 +5,17 @@
      ViewData["Title"] = "Usuarios";
 }
 
-<h1>Listado de Usuarios </h1>
+<div class="row">
+    <div class="col-md-6">
+        <h1>Listado de Usuarios </h1>
+    </div> 
+    <div class="col-md-6" >
+        <a asp-action="Create" class="btn btn-primary float-right mt-3">   <i class="fas fa-user"></i> Nuevo Usuario</a>
+    </div>
 
-<p>
-    <a asp-action="Create" class="btn btn-primary">Nuevo Usuario</a>
-</p>
+</div>
 
+<br />
 <div class="row">
 
     <table class="table">

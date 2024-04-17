@@ -36,7 +36,7 @@ namespace MyVet.Controllers
             return View();
         }
 
-        [HttpGet]
+        [HttpGet("GetAllMyPets")]
         public IActionResult GetAllMyPets()
         {
             var user = HttpContext.User;
@@ -46,12 +46,12 @@ namespace MyVet.Controllers
             return Ok(list);
         }
 
-        [HttpGet]
+        [HttpGet("GetAllPets")]
         public IActionResult GetAllPets()
         {
-            List<PetDto> list = _petServices.GetAllPets();
+            //List<PetDto> list = _petServices.GetAllPets();
 
-            return Ok(list);
+            return Ok(new List<PetDto>());
         }
 
 

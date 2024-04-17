@@ -48,21 +48,9 @@ namespace MyVet.Controllers
             else
             {
 
-                //UserEntity userEntity = (UserEntity)response.Result;
+                UserEntity userEntity = (UserEntity)response.Result;
 
 
-                //var claims = new List<Claim>
-                //{
-                //    new Claim(ClaimTypes.Name, userEntity.FullName),
-                //    new Claim(TypeClaims.IdUser, userEntity.IdUser.ToString()),
-                //    new Claim(TypeClaims.UserName, userEntity.Email),
-                //    new Claim(TypeClaims.IdRol, string.Join(",",userEntity.RolUserEntities.Select(x=>x.IdRol))),
-                //};
-
-
-                TokenDto token = JsonConvert.DeserializeObject<TokenDto>(response.Result.ToString());
-                string idRoles = Utils.GetClaimValue(token.Token, TypeClaims.IdRol);
-                string idUser = Utils.GetClaimValue(token.Token, TypeClaims.IdUser);
                 var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, userEntity.FullName),
@@ -70,6 +58,18 @@ namespace MyVet.Controllers
                     new Claim(TypeClaims.UserName, userEntity.Email),
                     new Claim(TypeClaims.IdRol, string.Join(",",userEntity.RolUserEntities.Select(x=>x.IdRol))),
                 };
+
+
+                //TokenDto token = JsonConvert.DeserializeObject<TokenDto>(response.Result.ToString());
+                //string idRoles = Utils.GetClaimValue(token.Token, TypeClaims.IdRol);
+                //string idUser = Utils.GetClaimValue(token.Token, TypeClaims.IdUser);
+                //var claims = new List<Claim>
+                //{
+                //    new Claim(ClaimTypes.Name, userEntity.FullName),
+                //    new Claim(TypeClaims.IdUser, userEntity.IdUser.ToString()),
+                //    new Claim(TypeClaims.UserName, userEntity.Email),
+                //    new Claim(TypeClaims.IdRol, string.Join(",",userEntity.RolUserEntities.Select(x=>x.IdRol))),
+                //};
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
                 var authProperties = new AuthenticationProperties
